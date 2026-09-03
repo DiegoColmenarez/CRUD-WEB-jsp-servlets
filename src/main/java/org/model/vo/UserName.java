@@ -10,7 +10,7 @@ public record UserName(String value) {
     private static final Pattern NAME_PATTERN =
             Pattern.compile("^[\\p{L} \\-']+$");
 
-    private static void validateNameIsString(String value) {
+    private static void validateNameFormat(String value) {
         if (!NAME_PATTERN.matcher(value).matches()) {
             throw InvalidNameUserException.beacuseIsNotString();
         }
@@ -19,7 +19,7 @@ public record UserName(String value) {
     public UserName{
         final String normalizedValue = Objects.requireNonNull(value, "UserName cannot be null")
                 .trim();
-        validateNameIsString(normalizedValue);
+        validateNameFormat(normalizedValue);
         value = normalizedValue;
     }
 }
