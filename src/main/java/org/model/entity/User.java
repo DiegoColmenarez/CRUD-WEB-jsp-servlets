@@ -48,4 +48,12 @@ public class User {
     public void setEmail(UserEmail email) {
         this.email = email;
     }
+
+    public UserType getType() {
+        return type;
+    }
+
+    public void setType(UserType type) {
+        this.type = type;
+    }
 }
