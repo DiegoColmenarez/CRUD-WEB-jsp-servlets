@@ -5,9 +5,14 @@ public class InvalidEmailUserException extends DomainException {
         super(message);
     }
 
-    private static final String MESSAGE_INVALID = "Email is Invalid";
+    private static final String MESSAGE_INVALID = "Email is Invalid, it's not a Email";
+    private static final String MESSAGE_INVALID_EMPTY = "Email is Invalid, It's empty.";
 
     public static InvalidEmailUserException becauseFormatIsInvalid(){
         return new InvalidEmailUserException(MESSAGE_INVALID);
+    }
+
+    public static InvalidEmailUserException becauseIsEmpty(){
+        return new InvalidEmailUserException(MESSAGE_INVALID_EMPTY);
     }
 }
