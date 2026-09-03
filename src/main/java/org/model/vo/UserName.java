@@ -17,7 +17,7 @@ public record UserName(String value) {
     }
 
     public UserName{
-        final String normalizedValue = Objects.requireNonNull(value, "UserLastName cannot be null")
+        final String normalizedValue = Objects.requireNonNull(value, "UserName cannot be null")
                 .trim();
         validateNameIsString(normalizedValue);
         value = normalizedValue;

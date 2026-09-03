@@ -13,7 +13,7 @@ public record UserId(int value) {
     }
 
     public UserId{
-        var normalizedValue =  Objects.requireNonNull(value, "UserLastName cannot be null");
+        var normalizedValue =  Objects.requireNonNull(value, "UserId cannot be null");
         validateIntPositive(normalizedValue);
         value = normalizedValue;
     }
