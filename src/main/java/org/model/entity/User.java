@@ -25,4 +25,11 @@ public class User {
     }
 
 
+    public UserName getName() {
+        return name;
+    }
+
+    public void setName(UserName name) {
+        this.name = name;
+    }
 }
