@@ -8,7 +8,7 @@ public class InvalidNameUserException extends DomainException{
     private static String MESSAGE_INVALID = "The name is invalid";
     private static String MESSAGE_INVALID_EMPTY = "The name is empty";
 
-    public static InvalidNameUserException beacuseIsNotString(){
+    public static InvalidNameUserException becauseContainsInvalidCharacters(){
         return new InvalidNameUserException(MESSAGE_INVALID);
     }
 

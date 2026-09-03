@@ -12,7 +12,7 @@ public record UserName(String value) {
 
     private static void validateNameFormat(String value) {
         if (!NAME_PATTERN.matcher(value).matches()) {
-            throw InvalidNameUserException.beacuseIsNotString();
+            throw InvalidNameUserException.becauseContainsInvalidCharacters();
         }
     }
 
