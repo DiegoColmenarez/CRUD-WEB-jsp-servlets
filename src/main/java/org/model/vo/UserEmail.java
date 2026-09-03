@@ -20,5 +20,6 @@ public record UserEmail(String value) {
     public UserEmail{
         final String normalizedValue = Objects.requireNonNull(value, "UserLastName cannot be null");
         validateFormatEmail(normalizedValue);
+        value = normalizedValue;
     }
 }
