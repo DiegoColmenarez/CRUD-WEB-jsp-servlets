@@ -16,6 +16,11 @@ public record UserEmail(String value) {
             throw InvalidEmailUserException.becauseFormatIsInvalid();
         }
     }
+    private static void validateNotEmptyEmail(String value){
+        if (value.isEmpty()){
+            throw InvalidEmailUserException.becauseIsEmpty();
+        }
+    }
 
     public UserEmail{
         final String normalizedValue = Objects.requireNonNull(value, "UserEmail cannot be null");
