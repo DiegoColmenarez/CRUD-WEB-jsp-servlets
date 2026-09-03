@@ -11,4 +11,8 @@ public class InvalidUserIdException extends DomainException{
     public static InvalidUserIdException becauseIdAlredyExist(){
         return new InvalidUserIdException(MESSAGE_EXIST_ID);
     }
+
+    public static InvalidUserIdException becauseIdAIsInvalid(){
+        return new InvalidUserIdException(MESSAGE_INVALID_ID);
+    }
 }
