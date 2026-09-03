@@ -40,4 +40,12 @@ public class User {
     public void setLastName(UserName lastName) {
         this.lastName = lastName;
     }
+
+    public UserEmail getEmail() {
+        return email;
+    }
+
+    public void setEmail(UserEmail email) {
+        this.email = email;
+    }
 }
