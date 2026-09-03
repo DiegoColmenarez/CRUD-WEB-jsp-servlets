@@ -32,4 +32,12 @@ public class User {
     public void setName(UserName name) {
         this.name = name;
     }
+
+    public UserName getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(UserName lastName) {
+        this.lastName = lastName;
+    }
 }
