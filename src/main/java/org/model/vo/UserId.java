@@ -2,7 +2,7 @@ package org.model.vo;
 
 import org.model.exceptions.InvalidUserIdException;
 
-import java.util.Objects;
+
 
 public record UserId(int value) {
 
@@ -13,8 +13,6 @@ public record UserId(int value) {
     }
 
     public UserId{
-        var normalizedValue =  Objects.requireNonNull(value, "UserId cannot be null");
-        validateIntPositive(normalizedValue);
-        value = normalizedValue;
+        validateIntPositive(value);
     }
 }
