@@ -12,6 +12,11 @@ public record UserType(String value) {
             throw InvalidTypeUserException.becauseValueIsInvalid();
         }
     }
+    private static void validateNotEmpty(String value){
+        if (value.isEmpty()){
+            throw InvalidTypeUserException.becauseIsEmpty();
+        }
+    }
 
     public UserType{
         final String normalizedValue = Objects.requireNonNull(value, "User type cannot be null")
