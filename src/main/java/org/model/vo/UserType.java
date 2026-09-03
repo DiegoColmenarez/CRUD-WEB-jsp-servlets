@@ -21,6 +21,7 @@ public record UserType(String value) {
     public UserType{
         final String normalizedValue = Objects.requireNonNull(value, "User type cannot be null")
                 .trim();
+        validateNotEmpty(normalizedValue);
         validateType(normalizedValue);
         value = normalizedValue;
     }
