@@ -12,7 +12,7 @@ public class InvalidUserIdException extends DomainException{
         return new InvalidUserIdException(MESSAGE_EXIST_ID);
     }
 
-    public static InvalidUserIdException becauseIdAIsInvalid(){
+    public static InvalidUserIdException becauseIdIsInvalid(){
         return new InvalidUserIdException(MESSAGE_INVALID_ID);
     }
 }

@@ -1,6 +1,6 @@
 package org.model.exceptions;
 
-public class InvalidEmailUserException extends RuntimeException {
+public class InvalidEmailUserException extends DomainException {
     public InvalidEmailUserException(String message) {
         super(message);
     }
