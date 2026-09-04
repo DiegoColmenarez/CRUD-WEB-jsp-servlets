@@ -48,4 +48,4 @@ Thumbs.db
 ### Logs y otros ###
 *.log
 *.class
-config.properties
+src/main/resources/config.properties
