@@ -1,5 +1,6 @@
 package org.model.entity;
 
+import org.model.enums.TypeUser;
 import org.model.vo.UserEmail;
 import org.model.vo.UserId;
 import org.model.vo.UserName;
@@ -11,8 +12,7 @@ public class User {
     private UserId id;
     private UserEmail email;
     private UserType type;
-
-    public User(
+    private User(
             UserName name,
             UserName lastName,
             UserEmail email,
