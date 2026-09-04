@@ -17,6 +17,7 @@ public class User {
             UserName name,
             UserName lastName,
             UserEmail email,
+
             UserType type
     ){
         this.name = name;
