@@ -20,6 +20,6 @@ public record UserName(String value) {
         final String normalizedValue = Objects.requireNonNull(value, "UserName cannot be null")
                 .trim();
         validateNameFormat(normalizedValue);
-        value = normalizedValue;
+        value = normalizedValue.toUpperCase();
     }
 }
