@@ -1,5 +1,6 @@
 package org.model.entity;
 
+import org.model.enums.TypeUser;
 import org.model.vo.UserEmail;
 import org.model.vo.UserId;
 import org.model.vo.UserName;
@@ -12,7 +13,7 @@ public class User {
     private UserEmail email;
     private UserType type;
 
-    public User(
+    private User(
             UserName name,
             UserName lastName,
             UserEmail email,
@@ -24,6 +25,13 @@ public class User {
         this.type = type;
     }
 
+    public static User createUser(
+            UserName name,
+            UserName lastName,
+            UserEmail email
+    ){
+        return new User(name, lastName, email, new UserType(TypeUser.CLIENTE));
+    }
 
     public UserName getName() {
         return name;
