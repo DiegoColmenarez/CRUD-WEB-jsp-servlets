@@ -12,6 +12,7 @@ public class User {
     private UserId id;
     private UserEmail email;
     private UserType type;
+
     private User(
             UserName name,
             UserName lastName,
@@ -24,6 +25,13 @@ public class User {
         this.type = type;
     }
 
+    public static User createUser(
+            UserName name,
+            UserName lastName,
+            UserEmail email
+    ){
+        return new User(name, lastName, email, new UserType(TypeUser.CLIENTE));
+    }
 
     public UserName getName() {
         return name;
