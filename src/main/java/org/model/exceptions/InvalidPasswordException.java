@@ -10,11 +10,11 @@ public class InvalidPasswordException extends DomainException{
             " The password must contain at least: a special character, a number, a lowercase letter, " +
             "and an uppercase letter. It cannot contain spaces.";
 
-    public InvalidPasswordException becauseIsEmpty(){
+    public static InvalidPasswordException becauseIsEmpty(){
         throw new InvalidPasswordException(MESSAGE_INVALID);
     }
 
-    public InvalidPasswordException becauseFormatIsInvalid(){
+    public static InvalidPasswordException becauseFormatIsInvalid(){
         throw new InvalidPasswordException(MESSAGE_INVALID_FORMAT);
     }
 }
