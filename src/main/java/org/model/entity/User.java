@@ -1,36 +1,37 @@
 package org.model.entity;
 
 import org.model.enums.TypeUser;
-import org.model.vo.UserEmail;
-import org.model.vo.UserId;
-import org.model.vo.UserName;
-import org.model.vo.UserType;
+import org.model.vo.*;
 
 public class User {
     private UserName name;
     private UserName lastName;
     private UserId id;
     private UserEmail email;
+    private UserPassword password;
     private UserType type;
 
     private User(
             UserName name,
             UserName lastName,
             UserEmail email,
+            UserPassword password,
             UserType type
     ){
         this.name = name;
         this.lastName = lastName;
         this.email = email;
+        this.password = password;
         this.type = type;
     }
 
     public static User createUser(
             UserName name,
             UserName lastName,
-            UserEmail email
+            UserEmail email,
+            UserPassword password
     ){
-        return new User(name, lastName, email, new UserType(TypeUser.CLIENTE));
+        return new User(name, lastName, email, password, new UserType(TypeUser.CLIENTE));
     }
 
     public UserName getName() {
@@ -63,5 +64,13 @@ public class User {
 
     public void setType(UserType type) {
         this.type = type;
+    }
+
+    public UserPassword getPassword() {
+        return password;
+    }
+
+    public void setPassword(UserPassword password) {
+        this.password = password;
     }
 }
