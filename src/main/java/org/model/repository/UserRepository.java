@@ -23,7 +23,7 @@ public class UserRepository {
             if ("23505".equals(e.getSQLState())){
                 throw InvalidEmailUserException.becauseEmailAlredy();
             }
-            throw new RuntimeException(e);
+            throw new RuntimeException();
         }
     }
 }
