@@ -3,6 +3,7 @@ package org.model.repository;
 import org.model.config.ConnectionFactory;
 import org.model.entity.User;
 import org.model.exceptions.InvalidEmailUserException;
+import org.model.exceptions.InvalidNameUserException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,7 +24,7 @@ public class UserRepository {
             if ("23505".equals(e.getSQLState())){
                 throw InvalidEmailUserException.becauseEmailAlredy();
             }
-            throw new RuntimeException();
+            throw RepositoryException.repositoryGeneralException(e.getCause());
         }
     }
 }
