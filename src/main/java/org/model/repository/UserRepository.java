@@ -84,4 +84,24 @@ public class UserRepository {
         }
         return users;
     }
+    public User findById(UserId id) {
+        String sql = "SELECT id, nombre, apellido, email FROM users WHERE id = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id.value());
+            try (ResultSet resultSet = stmt.executeQuery()) {
+                if (resultSet.next()) {
+                    return User.createUser(
+                            new UserId(resultSet.getInt("id")),
+                            new UserName(resultSet.getString("nombre")),
+                            new UserName(resultSet.getString("apellido")),
+                            new UserEmail(resultSet.getString("email"))
+                    );
+                }
+                throw UserNotFoundException.becauseIdDoesExist(id);
+            }
+        } catch (SQLException e) {
+            throw RepositoryException.repositoryGeneralException(e);
+        }
+    }
 }
