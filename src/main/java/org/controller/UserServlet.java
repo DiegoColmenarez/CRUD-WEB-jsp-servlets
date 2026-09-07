@@ -1,11 +1,19 @@
 package org.controller;
 
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.model.entity.User;
+import org.model.exceptions.DomainException;
 import org.model.repository.UserRepository;
+import org.model.vo.UserEmail;
+import org.model.vo.UserName;
+import org.model.vo.UserPassword;
+
+import java.io.IOException;
 
 @WebServlet(name = "UserServlet", value = "/user")
 public class UserServlet extends HttpServlet {
@@ -63,6 +71,13 @@ public class UserServlet extends HttpServlet {
             throw new ServletException("Error procesando la petición POST", e);
         }
     }
+
+    private void showAddForm(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/jsp/user/add.jsp");
+        dispatcher.forward(request, response);
+    }
+
 
 
 }
