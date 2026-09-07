@@ -73,4 +73,8 @@ public class User {
     public void setPassword(UserPassword password) {
         this.password = password;
     }
+
+    public UserId getId() {
+        return id;
+    }
 }
