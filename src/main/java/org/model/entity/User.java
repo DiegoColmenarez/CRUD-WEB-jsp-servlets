@@ -24,6 +24,32 @@ public class User {
         this.password = password;
         this.type = type;
     }
+    private User(
+            UserId id,
+            UserName name,
+            UserName lastName,
+            UserEmail email,
+            UserPassword password,
+            UserType type
+    ){
+        this.id = id;
+        this.name = name;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.type = type;
+    }
+    private User(
+            UserId id,
+            UserName name,
+            UserName lastName,
+            UserEmail email
+    ){
+        this.id = id;
+        this.name = name;
+        this.lastName = lastName;
+        this.email = email;
+    }
 
     public static User createUser(
             UserName name,
