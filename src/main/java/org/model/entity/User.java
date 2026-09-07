@@ -60,6 +60,26 @@ public class User {
         return new User(name, lastName, email, password, new UserType(TypeUser.CLIENTE));
     }
 
+    public static User createUser(
+            UserId id,
+            UserName name,
+            UserName lastName,
+            UserEmail email,
+            UserPassword password,
+            UserType type
+    ){
+        return new User(id, name, lastName, email, password, type);
+    }
+
+    public static User createUser(
+            UserId id,
+            UserName name,
+            UserName lastName,
+            UserEmail email
+    ){
+        return new User(id, name, lastName, email);
+    }
+
     public UserName getName() {
         return name;
     }
