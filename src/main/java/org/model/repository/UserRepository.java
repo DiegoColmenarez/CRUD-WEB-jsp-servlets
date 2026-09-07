@@ -42,4 +42,22 @@ public class UserRepository {
             throw RepositoryException.repositoryGeneralException(e.getCause());
         }
     }
+
+    public void updateUser(User user) {
+        String sql = "UPDATE users SET nombre = ?, apellido = ?, email = ? WHERE id = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, user.getName().value());
+            stmt.setString(2, user.getLastName().value());
+            stmt.setString(3, user.getEmail().value());
+            stmt.setInt(4, user.getId().value());
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected == 0) {
+                throw UserNotFoundException.becauseIdDoesExist(user.getId());
+            }
+        } catch (SQLException e) {
+            throw RepositoryException.repositoryGeneralException(e.getCause());
+        }
+    }
 }
