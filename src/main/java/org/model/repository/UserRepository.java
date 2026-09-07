@@ -3,14 +3,13 @@ package org.model.repository;
 import org.model.config.ConnectionFactory;
 import org.model.entity.User;
 import org.model.exceptions.InvalidEmailUserException;
-import org.model.vo.UserEmail;
 import org.model.vo.UserId;
-import org.model.vo.UserName;
-import org.model.vo.UserPassword;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserRepository {
 
@@ -50,7 +49,6 @@ public class UserRepository {
         String sql = "UPDATE users SET nombre = ?, apellido = ?, email = ? WHERE id = ?";
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-
             stmt.setString(1, user.getName().value());
             stmt.setString(2, user.getLastName().value());
             stmt.setString(3, user.getEmail().value());
@@ -65,5 +63,25 @@ public class UserRepository {
             }
             throw RepositoryException.repositoryGeneralException(e.getCause());
         }
+    }
+
+    public List<User> listAllUsers() {
+        String sql = "SELECT id, nombre, apellido, email FROM users";
+        List<User> users = new ArrayList<>();
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet resultSet = stmt.executeQuery()) {
+//            while (resultSet.next()) {
+//                users.add(new User(
+//                        new UserId(rs.getInt("id")),
+//                        new UserName(rs.getString("nombre")),
+//                        new UserName(rs.getString("apellido")),
+//                        new UserEmail(rs.getString("email"))
+//                ));
+ //           }
+        } catch (SQLException e) {
+            throw RepositoryException.repositoryGeneralException(e.getCause());
+        }
+        return users;
     }
 }
