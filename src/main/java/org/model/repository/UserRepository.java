@@ -3,7 +3,9 @@ package org.model.repository;
 import org.model.config.ConnectionFactory;
 import org.model.entity.User;
 import org.model.exceptions.InvalidEmailUserException;
+import org.model.vo.UserEmail;
 import org.model.vo.UserId;
+import org.model.vo.UserName;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -71,14 +73,12 @@ public class UserRepository {
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet resultSet = stmt.executeQuery()) {
-//            while (resultSet.next()) {
-//                users.add(new User(
-//                        new UserId(rs.getInt("id")),
-//                        new UserName(rs.getString("nombre")),
-//                        new UserName(rs.getString("apellido")),
-//                        new UserEmail(rs.getString("email"))
-//                ));
- //           }
+            while (resultSet.next()) {
+               users.add(User.createUser(new UserId(resultSet.getInt("id")),
+                       new UserName(resultSet.getString("nombre")),
+                       new UserName(resultSet.getString("apellido")),
+                       new UserEmail(resultSet.getString("email"))));
+         }
         } catch (SQLException e) {
             throw RepositoryException.repositoryGeneralException(e.getCause());
         }
