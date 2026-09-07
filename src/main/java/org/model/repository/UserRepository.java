@@ -28,7 +28,6 @@ public class UserRepository {
         }
     }
 
-    //esto está mal cambialo
     public void deleteUser(UserId id) {
         String sql = "DELETE FROM users WHERE id = ?";
         int rowsAffect = 0;
@@ -37,7 +36,7 @@ public class UserRepository {
             statement.setInt(1, id.value());
             rowsAffect = statement.executeUpdate();
             if (rowsAffect == 0) {
-                throw new RuntimeException("No se afectaron filas");
+               throw UserNotFoundException.becauseIdDoesExist(id);
             }
         } catch (SQLException e) {
             throw RepositoryException.repositoryGeneralException(e.getCause());
