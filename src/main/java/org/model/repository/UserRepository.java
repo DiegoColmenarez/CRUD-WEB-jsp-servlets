@@ -3,7 +3,10 @@ package org.model.repository;
 import org.model.config.ConnectionFactory;
 import org.model.entity.User;
 import org.model.exceptions.InvalidEmailUserException;
+import org.model.vo.UserEmail;
 import org.model.vo.UserId;
+import org.model.vo.UserName;
+import org.model.vo.UserPassword;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -57,6 +60,9 @@ public class UserRepository {
                 throw UserNotFoundException.becauseIdDoesExist(user.getId());
             }
         } catch (SQLException e) {
+            if ("23505".equals(e.getSQLState())) {
+                throw InvalidEmailUserException.becauseEmailAlredy();
+            }
             throw RepositoryException.repositoryGeneralException(e.getCause());
         }
     }
