@@ -28,7 +28,7 @@ public class UserRepository {
             if ("23505".equals(e.getSQLState())) {
                 throw InvalidEmailUserException.becauseEmailAlredy();
             }
-            throw RepositoryException.repositoryGeneralException(e.getCause());
+            throw RepositoryException.repositoryGeneralException(e);
         }
     }
 
@@ -43,7 +43,7 @@ public class UserRepository {
                throw UserNotFoundException.becauseIdDoesExist(id);
             }
         } catch (SQLException e) {
-            throw RepositoryException.repositoryGeneralException(e.getCause());
+            throw RepositoryException.repositoryGeneralException(e);
         }
     }
 
@@ -63,7 +63,7 @@ public class UserRepository {
             if ("23505".equals(e.getSQLState())) {
                 throw InvalidEmailUserException.becauseEmailAlredy();
             }
-            throw RepositoryException.repositoryGeneralException(e.getCause());
+            throw RepositoryException.repositoryGeneralException(e);
         }
     }
 
@@ -80,7 +80,7 @@ public class UserRepository {
                        new UserEmail(resultSet.getString("email"))));
          }
         } catch (SQLException e) {
-            throw RepositoryException.repositoryGeneralException(e.getCause());
+            throw RepositoryException.repositoryGeneralException(e);
         }
         return users;
     }
