@@ -36,6 +36,7 @@ public class UserServlet extends HttpServlet {
         try {
             switch (action) {
                 case "add":
+                    showAddForm(request, response);
                     break;
                 case "edit":
                     break;
@@ -58,6 +59,7 @@ public class UserServlet extends HttpServlet {
         try {
             switch (action) {
                 case "insert":
+                    insertUser(request, response);
                     break;
                 case "update":
                     break;
@@ -76,6 +78,28 @@ public class UserServlet extends HttpServlet {
             throws ServletException, IOException {
         RequestDispatcher dispatcher = request.getRequestDispatcher("/jsp/user/add.jsp");
         dispatcher.forward(request, response);
+    }
+
+    private void insertUser(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+            String name = request.getParameter("nombre");
+            String lastName = request.getParameter("apellido");
+            String email = request.getParameter("email");
+            String password = request.getParameter("password");
+            User newUser = User.createUser(
+                    new UserName(name),
+                    new UserName(lastName),
+                    new UserEmail(email),
+                    new UserPassword(password)
+            );
+            userRepository.insertUser(newUser);
+            response.sendRedirect("/menu.jsp");
+        } catch (DomainException e) {
+            request.setAttribute("errorMessage", e.getMessage());
+            RequestDispatcher dispatcher = request.getRequestDispatcher("jsp/user/add.jsp");
+            dispatcher.forward(request, response);
+        }
     }
 
 
