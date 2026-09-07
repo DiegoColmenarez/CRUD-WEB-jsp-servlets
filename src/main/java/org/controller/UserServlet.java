@@ -10,6 +10,7 @@ import org.model.entity.User;
 import org.model.exceptions.DomainException;
 import org.model.repository.UserRepository;
 import org.model.vo.UserEmail;
+import org.model.vo.UserId;
 import org.model.vo.UserName;
 import org.model.vo.UserPassword;
 
@@ -41,9 +42,11 @@ public class UserServlet extends HttpServlet {
                 case "edit":
                     break;
                 case "delete":
+                    showDeleteConfirmation(request, response);
                     break;
                 case "list":
                 default:
+
                     break;
             }
         } catch (Exception e) {
@@ -102,6 +105,17 @@ public class UserServlet extends HttpServlet {
         }
     }
 
-
-
+    private void showDeleteConfirmation(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+            int id = Integer.parseInt(request.getParameter("id"));
+            UserId userId = new UserId(id);
+            User user = userRepository.findById(userId);
+            request.setAttribute("user", user);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("jsp/user/remove.jsp");
+            dispatcher.forward(request, response);
+        } catch (NumberFormatException e) {
+            response.sendRedirect("/menu.jsp");
+        }
+    }
 }
