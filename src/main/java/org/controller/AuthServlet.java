@@ -34,5 +34,22 @@ public class AuthServlet extends HttpServlet {
         RequestDispatcher dispatcher = request.getRequestDispatcher("jsp/auth/register.jsp");
         dispatcher.forward(request, response);
     }
+    private void login(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+        try {
+            UserEmail userEmail = new UserEmail(email);
+            UserPassword userPassword = new UserPassword(password);
+            User user = userRepository.authenticate(userEmail, userPassword);
+            HttpSession session = request.getSession(true);
+            session.setAttribute("user", user);
+            session.setMaxInactiveInterval(30 * 60);
+            response.sendRedirect(request.getContextPath() + "/menu.jsp");
+        } catch (DomainException e) {
+            request.setAttribute("errorMessage", e.getMessage());
+            showLoginForm(request, response);
+        }
+    }
 }
 
