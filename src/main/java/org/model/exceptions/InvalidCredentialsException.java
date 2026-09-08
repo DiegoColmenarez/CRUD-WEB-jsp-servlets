@@ -1,6 +1,6 @@
-package org.model.repository;
+package org.model.exceptions;
 
-public class InvalidCredentialsException extends RepositoryException{
+public class InvalidCredentialsException extends DomainException {
     public InvalidCredentialsException(String message) {
         super(message);
     }

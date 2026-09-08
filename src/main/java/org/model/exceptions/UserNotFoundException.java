@@ -1,9 +1,8 @@
-package org.model.repository;
-
+package org.model.exceptions;
 
 import org.model.vo.UserId;
 
-public class UserNotFoundException extends RepositoryException{
+public class UserNotFoundException extends DomainException{
     public UserNotFoundException(String message) {
         super(message);
     }
