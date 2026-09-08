@@ -3,6 +3,9 @@ package org.model.entity;
 import org.model.enums.TypeUser;
 import org.model.vo.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class User {
     private UserName name;
     private UserName lastName;
@@ -90,15 +93,16 @@ public class User {
     ){
         return new User(id, name, lastName, email);
     }
-    public static User createUser(
+    public static List<User> createUsers(
             UserName name,
             UserName lastName,
             UserEmail email,
             UserType type
-    ){
-        return new User(name, lastName, email, type);
+    ) {
+        List<User> users = new ArrayList<>();
+        users.add(new User(name, lastName, email, type));
+        return users;
     }
-
     public UserName getName() {
         return name;
     }
