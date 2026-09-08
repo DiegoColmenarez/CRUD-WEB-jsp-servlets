@@ -2,6 +2,7 @@ package org.model.repository;
 
 import org.model.config.ConnectionFactory;
 import org.model.entity.User;
+import org.model.enums.TypeUser;
 import org.model.exceptions.InvalidCredentialsException;
 import org.model.exceptions.InvalidEmailUserException;
 import org.model.exceptions.UserNotFoundException;
@@ -130,23 +131,24 @@ public class UserRepository {
             throw RepositoryException.repositoryGeneralException(e);
         }
     }
-    public List<User> findByName(UserName userName){
+    public User findByName(UserName userName){
         String sql =  "SELECT nombre, apellido, email, tipo FROM users WHERE nombre = ?";
         try (Connection connection = ConnectionFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, userName.value());
             try (ResultSet resultSet = statement.executeQuery()){
                 if (resultSet.next()){
-                    //return User.createUser(
-                        //    new UserName(resultSet.getString("nombre")),
-                            //   new UserName(resultSet.getString("apellido")),
-                        //    new UserEmail(resultSet.getString("email")),
-                           // new UserType(resultSet.getString("tipo"))
-                  //  );
+                    return User.createUser(
+                            new UserName(resultSet.getString("nombre")),
+                            new UserName(resultSet.getString("apellido")),
+                            new UserEmail(resultSet.getString("email")),
+                            new UserType(TypeUser.valueOf(resultSet.getString("tipo").toUpperCase()))
+                   );
                 }
+                throw new RuntimeException("no se encotró usuario");
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw RepositoryException.repositoryGeneralException(e);
         }
     }
 }
