@@ -28,7 +28,7 @@ public class UserRepository {
             if ("23505".equals(e.getSQLState())) {
                 throw InvalidEmailUserException.becauseEmailAlredy();
             }
-            throw RepositoryException.repositoryGeneralException(e.getCause());
+            throw RepositoryException.repositoryGeneralException(e);
         }
     }
 
@@ -43,7 +43,7 @@ public class UserRepository {
                throw UserNotFoundException.becauseIdDoesExist(id);
             }
         } catch (SQLException e) {
-            throw RepositoryException.repositoryGeneralException(e.getCause());
+            throw RepositoryException.repositoryGeneralException(e);
         }
     }
 
@@ -63,7 +63,7 @@ public class UserRepository {
             if ("23505".equals(e.getSQLState())) {
                 throw InvalidEmailUserException.becauseEmailAlredy();
             }
-            throw RepositoryException.repositoryGeneralException(e.getCause());
+            throw RepositoryException.repositoryGeneralException(e);
         }
     }
 
@@ -80,8 +80,28 @@ public class UserRepository {
                        new UserEmail(resultSet.getString("email"))));
          }
         } catch (SQLException e) {
-            throw RepositoryException.repositoryGeneralException(e.getCause());
+            throw RepositoryException.repositoryGeneralException(e);
         }
         return users;
+    }
+    public User findById(UserId id) {
+        String sql = "SELECT id, nombre, apellido, email FROM users WHERE id = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id.value());
+            try (ResultSet resultSet = stmt.executeQuery()) {
+                if (resultSet.next()) {
+                    return User.createUser(
+                            new UserId(resultSet.getInt("id")),
+                            new UserName(resultSet.getString("nombre")),
+                            new UserName(resultSet.getString("apellido")),
+                            new UserEmail(resultSet.getString("email"))
+                    );
+                }
+                throw UserNotFoundException.becauseIdDoesExist(id);
+            }
+        } catch (SQLException e) {
+            throw RepositoryException.repositoryGeneralException(e);
+        }
     }
 }
