@@ -1,9 +1,108 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!DOCTYPE html>
 <html>
 <head>
-    <title>Title</title>
+    <meta charset="UTF-8">
+    <title>Modificar Usuario</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 500px;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #333;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .btn-submit {
+            width: 100%;
+            padding: 12px;
+            background-color: #ffc107;
+            color: #333;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .btn-cancel {
+            display: block;
+            text-align: center;
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #6c757d;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        .error-message {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
+<div class="container">
+    <h2>Modificar Usuario</h2>
 
+    <c:if test="${not empty errorMessage}">
+        <div class="error-message">
+                ${errorMessage}
+        </div>
+    </c:if>
+
+    <form action="${pageContext.request.contextPath}/user" method="post">
+        <input type="hidden" name="action" value="update">
+        <input type="hidden" name="id" value="${user.id.value}">
+
+        <div class="form-group">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" value="${user.firstName.value}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="apellido">Apellido:</label>
+            <input type="text" id="apellido" name="apellido" value="${user.lastName.value}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" value="${user.email.value}" required>
+        </div>
+
+        <button type="submit" class="btn-submit">Actualizar Usuario</button>
+        <a href="${pageContext.request.contextPath}/menu.jsp" class="btn-cancel">Cancelar</a>
+    </form>
+</div>
 </body>
 </html>
