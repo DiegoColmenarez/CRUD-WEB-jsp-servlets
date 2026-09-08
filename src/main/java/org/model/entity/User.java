@@ -50,6 +50,17 @@ public class User {
         this.lastName = lastName;
         this.email = email;
     }
+    private User(
+            UserName name,
+            UserName lastName,
+            UserEmail email,
+            UserType type
+    ){
+        this.name = name;
+        this.lastName = lastName;
+        this.email = email;
+        this.type = type;
+    }
 
     public static User createUser(
             UserName name,
@@ -78,6 +89,14 @@ public class User {
             UserEmail email
     ){
         return new User(id, name, lastName, email);
+    }
+    public static User createUser(
+            UserName name,
+            UserName lastName,
+            UserEmail email,
+            UserType type
+    ){
+        return new User(name, lastName, email, type);
     }
 
     public UserName getName() {

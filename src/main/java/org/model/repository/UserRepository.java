@@ -5,10 +5,7 @@ import org.model.entity.User;
 import org.model.exceptions.InvalidCredentialsException;
 import org.model.exceptions.InvalidEmailUserException;
 import org.model.exceptions.UserNotFoundException;
-import org.model.vo.UserEmail;
-import org.model.vo.UserId;
-import org.model.vo.UserName;
-import org.model.vo.UserPassword;
+import org.model.vo.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -131,6 +128,25 @@ public class UserRepository {
             }
         } catch (SQLException e) {
             throw RepositoryException.repositoryGeneralException(e);
+        }
+    }
+    public List<User> findByName(UserName userName){
+        String sql =  "SELECT nombre, apellido, email, tipo FROM users WHERE nombre = ?";
+        try (Connection connection = ConnectionFactory.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, userName.value());
+            try (ResultSet resultSet = statement.executeQuery()){
+                if (resultSet.next()){
+                    //return User.createUser(
+                        //    new UserName(resultSet.getString("nombre")),
+                            //   new UserName(resultSet.getString("apellido")),
+                        //    new UserEmail(resultSet.getString("email")),
+                           // new UserType(resultSet.getString("tipo"))
+                  //  );
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 }
