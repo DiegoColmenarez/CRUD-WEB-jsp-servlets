@@ -145,7 +145,7 @@ public class UserRepository {
                             new UserType(TypeUser.valueOf(resultSet.getString("tipo").toUpperCase()))
                    );
                 }
-                throw new RuntimeException("no se encotró usuario");
+                throw UserNotFoundException.becauseNameDoesExist(userName);
             }
         } catch (SQLException e) {
             throw RepositoryException.repositoryGeneralException(e);
