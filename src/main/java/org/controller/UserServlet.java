@@ -160,7 +160,7 @@ public class UserServlet extends HttpServlet {
             request.setAttribute("errorMessage", e.getMessage());
             dispatcher = request.getRequestDispatcher("jsp/user/searchModify.jsp");
             dispatcher.forward(request, response);
-    }
+        }
     }
 
     private void updateUser(HttpServletRequest request, HttpServletResponse response)

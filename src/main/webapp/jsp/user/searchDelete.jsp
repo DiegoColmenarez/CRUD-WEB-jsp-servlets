@@ -97,6 +97,9 @@
 <body>
 <div class="container">
     <h2>Buscar Usuario para Eliminar</h2>
+    <c:if test="${not empty errorMessage}">
+        <div class="error-message">${errorMessage}</div>
+    </c:if>
     <form id="searchForm">
         <div class="form-group">
             <label for="id">ID del Usuario:</label>
