@@ -2,7 +2,9 @@ package org.model.repository;
 
 import org.model.config.ConnectionFactory;
 import org.model.entity.User;
+import org.model.exceptions.InvalidCredentialsException;
 import org.model.exceptions.InvalidEmailUserException;
+import org.model.exceptions.UserNotFoundException;
 import org.model.vo.UserEmail;
 import org.model.vo.UserId;
 import org.model.vo.UserName;
