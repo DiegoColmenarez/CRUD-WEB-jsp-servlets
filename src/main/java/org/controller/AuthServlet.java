@@ -11,6 +11,7 @@ import org.model.entity.User;
 import org.model.exceptions.DomainException;
 import org.model.repository.UserRepository;
 import org.model.vo.UserEmail;
+import org.model.vo.UserName;
 import org.model.vo.UserPassword;
 
 import java.io.IOException;
@@ -49,6 +50,27 @@ public class AuthServlet extends HttpServlet {
         } catch (DomainException e) {
             request.setAttribute("errorMessage", e.getMessage());
             showLoginForm(request, response);
+        }
+    }
+    private void register(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String name = request.getParameter("nombre");
+        String lastName = request.getParameter("apellido");
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+        try {
+            User newUser = User.createUser(
+                    new UserName(name),
+                    new UserName(lastName),
+                    new UserEmail(email),
+                    new UserPassword(password)
+            );
+            userRepository.insertUser(newUser);
+            request.setAttribute("successMessage", "Registro exitoso. Por favor inicie sesión.");
+            showLoginForm(request, response);
+        } catch (DomainException e) {
+            request.setAttribute("errorMessage", e.getMessage());
+            showRegisterForm(request, response);
         }
     }
 }
