@@ -3,7 +3,7 @@ package org.model.repository;
 
 import org.model.vo.UserId;
 
-public class UserNotFoundException extends RuntimeException {
+public class UserNotFoundException extends RepositoryException{
     public UserNotFoundException(String message) {
         super(message);
     }

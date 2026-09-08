@@ -125,7 +125,7 @@ public class UserRepository {
                             new UserEmail(resultSet.getString("email"))
                     );
                 }
-                throw new RuntimeException();
+                throw InvalidCredentialsException.becauseCrendentialInvalid();
             }
         } catch (SQLException e) {
             throw RepositoryException.repositoryGeneralException(e);
