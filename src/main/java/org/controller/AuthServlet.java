@@ -1,0 +1,108 @@
+package org.controller;
+
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import org.model.entity.User;
+import org.model.exceptions.DomainException;
+import org.model.repository.UserRepository;
+import org.model.vo.UserEmail;
+import org.model.vo.UserName;
+import org.model.vo.UserPassword;
+
+import java.io.IOException;
+
+@WebServlet(name = "AuthServlet", value = "/auth")
+public class AuthServlet extends HttpServlet {
+    private UserRepository userRepository;
+
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        this.userRepository = new UserRepository();
+    }
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String action = request.getParameter("action");
+        if ("logout".equals(action)) {
+            logout(request, response);
+        } else if ("register".equals(action)) {
+            showRegisterForm(request, response);
+        } else {
+            showLoginForm(request, response);
+        }
+    }
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String action = request.getParameter("action");
+
+        if ("login".equals(action)) {
+            login(request, response);
+        } else if ("register".equals(action)) {
+            register(request, response);
+        }
+    }
+    private void showLoginForm(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        RequestDispatcher dispatcher = request.getRequestDispatcher("jsp/auth/login.jsp");
+        dispatcher.forward(request, response);
+    }
+    private void showRegisterForm(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        RequestDispatcher dispatcher = request.getRequestDispatcher("jsp/auth/register.jsp");
+        dispatcher.forward(request, response);
+    }
+    private void login(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+        try {
+            UserEmail userEmail = new UserEmail(email);
+            UserPassword userPassword = new UserPassword(password);
+            User user = userRepository.authenticate(userEmail, userPassword);
+            HttpSession session = request.getSession(true);
+            session.setAttribute("user", user);
+            session.setMaxInactiveInterval(30 * 60);
+            response.sendRedirect(request.getContextPath() + "/menu.jsp");
+        } catch (DomainException e) {
+            request.setAttribute("errorMessage", e.getMessage());
+            showLoginForm(request, response);
+        }
+    }
+    private void register(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String name = request.getParameter("nombre");
+        String lastName = request.getParameter("apellido");
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+        try {
+            User newUser = User.createUser(
+                    new UserName(name),
+                    new UserName(lastName),
+                    new UserEmail(email),
+                    new UserPassword(password)
+            );
+            userRepository.insertUser(newUser);
+            request.setAttribute("successMessage", "Registro exitoso. Por favor inicie sesión.");
+            showLoginForm(request, response);
+        } catch (DomainException e) {
+            request.setAttribute("errorMessage", e.getMessage());
+            showRegisterForm(request, response);
+        }
+    }
+    private void logout(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+        response.sendRedirect(request.getContextPath() + "/auth?action=login");
+    }
+}
+
