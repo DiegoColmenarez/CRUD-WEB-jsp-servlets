@@ -1,76 +1,97 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eliminar Usuario</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+        * {
             margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             padding: 20px;
         }
         .container {
-            max-width: 500px;
-            margin: 40px auto;
             background: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 40px;
+            max-width: 400px;
+            width: 100%;
         }
         h2 {
-            color: #dc3545;
-            margin-bottom: 25px;
+            color: #333;
             text-align: center;
-        }
-        .warning {
-            background-color: #fff3cd;
-            color: #856404;
-            padding: 15px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-            text-align: center;
+            margin-bottom: 30px;
         }
         .user-info {
-            background-color: #f8f9fa;
-            padding: 15px;
-            border-radius: 4px;
-            margin-bottom: 25px;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
         }
         .user-info p {
-            margin: 8px 0;
-            color: #495057;
+            margin-bottom: 10px;
+            color: #555;
         }
         .user-info strong {
             color: #333;
         }
-        .btn-delete {
-            padding: 12px 24px;
-            background-color: #dc3545;
+        .warning {
+            color: #ff4757;
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+        .btn-danger {
+            width: 100%;
+            padding: 12px;
+            background: #ff4757;
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 8px;
+            font-size: 16px;
             cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-            margin-right: 10px;
+            transition: background 0.3s;
         }
-        .btn-cancel {
-            display: inline-block;
-            padding: 12px 24px;
-            background-color: #6c757d;
+        .btn-danger:hover {
+            background: #ee2d3a;
+        }
+        .btn-secondary {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background: #95a5a6;
             color: white;
-            text-decoration: none;
-            border-radius: 4px;
+            border: none;
+            border-radius: 8px;
             font-size: 16px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            margin-top: 10px;
+            transition: background 0.3s;
+        }
+        .btn-secondary:hover {
+            background: #7f8c8d;
         }
         .error-message {
-            background-color: #f8d7da;
-            color: #721c24;
+            background: #ff4757;
+            color: white;
             padding: 10px;
-            border-radius: 4px;
+            border-radius: 5px;
             margin-bottom: 20px;
+            text-align: center;
         }
     </style>
 </head>
@@ -79,29 +100,24 @@
     <h2>Confirmar Eliminación</h2>
 
     <c:if test="${not empty errorMessage}">
-        <div class="error-message">
-                ${errorMessage}
-        </div>
+        <div class="error-message">${errorMessage}</div>
     </c:if>
-
-    <div class="warning">
-        <strong>¿Estás seguro de que deseas eliminar este usuario?</strong>
-    </div>
 
     <div class="user-info">
         <p><strong>ID:</strong> ${user.id.value}</p>
-        <p><strong>Nombre:</strong> ${user.firstName.value} ${user.lastName.value}</p>
+        <p><strong>Nombre:</strong> ${user.name.value}</p>
+        <p><strong>Apellido:</strong> ${user.lastName.value}</p>
         <p><strong>Email:</strong> ${user.email.value}</p>
     </div>
 
-    <div style="text-align: center;">
-        <form action="${pageContext.request.contextPath}/user" method="post" style="display: inline;">
-            <input type="hidden" name="action" value="delete">
-            <input type="hidden" name="id" value="${user.id.value}">
-            <button type="submit" class="btn-delete">Confirmar Eliminación</button>
-        </form>
-        <a href="${pageContext.request.contextPath}/menu.jsp" class="btn-cancel">Cancelar</a>
-    </div>
+    <p class="warning">¿Está seguro que desea eliminar este usuario?</p>
+
+    <form action="${pageContext.request.contextPath}/user" method="post">
+        <input type="hidden" name="action" value="delete">
+        <input type="hidden" name="id" value="${user.id.value}">
+        <button type="submit" class="btn-danger">Eliminar Usuario</button>
+    </form>
+    <a href="${pageContext.request.contextPath}/menu.jsp" class="btn-secondary">Cancelar</a>
 </div>
 </body>
 </html>
