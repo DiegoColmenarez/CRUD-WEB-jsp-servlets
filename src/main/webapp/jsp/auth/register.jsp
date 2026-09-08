@@ -1,31 +1,37 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Usuario</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
+            padding: 20px;
         }
-        .register-container {
+        .container {
             background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            width: 100%;
             max-width: 400px;
+            width: 100%;
         }
         h2 {
-            text-align: center;
             color: #333;
+            text-align: center;
             margin-bottom: 30px;
         }
         .form-group {
@@ -35,82 +41,85 @@
             display: block;
             margin-bottom: 5px;
             color: #555;
-            font-weight: bold;
+            font-weight: 500;
         }
-        input[type="text"],
         input[type="email"],
-        input[type="password"] {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-        .btn-register {
+        input[type="password"],
+        input[type="text"] {
             width: 100%;
             padding: 12px;
-            background-color: #28a745;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        input:focus {
+            border-color: #667eea;
+            outline: none;
+        }
+        .btn-primary {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            border-radius: 4px;
-            cursor: pointer;
+            border-radius: 8px;
             font-size: 16px;
-            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s;
         }
-        .error-message {
-            background-color: #f8d7da;
-            color: #721c24;
-            padding: 10px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-            text-align: center;
+        .btn-primary:hover {
+            transform: translateY(-2px);
         }
-        .btn-login {
+        .link {
             display: block;
             text-align: center;
-            margin-top: 15px;
-            color: #007bff;
+            margin-top: 20px;
+            color: #667eea;
             text-decoration: none;
+        }
+        .link:hover {
+            text-decoration: underline;
+        }
+        .error-message {
+            background: #ff4757;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: center;
         }
     </style>
 </head>
 <body>
-<div class="register-container">
+<div class="container">
     <h2>Registro de Usuario</h2>
 
     <c:if test="${not empty errorMessage}">
-        <div class="error-message">
-                ${errorMessage}
-        </div>
+        <div class="error-message">${errorMessage}</div>
     </c:if>
 
     <form action="${pageContext.request.contextPath}/auth" method="post">
         <input type="hidden" name="action" value="register">
-
         <div class="form-group">
             <label for="nombre">Nombre:</label>
             <input type="text" id="nombre" name="nombre" required>
         </div>
-
         <div class="form-group">
             <label for="apellido">Apellido:</label>
             <input type="text" id="apellido" name="apellido" required>
         </div>
-
         <div class="form-group">
             <label for="email">Email:</label>
             <input type="email" id="email" name="email" required>
         </div>
-
         <div class="form-group">
             <label for="password">Contraseña:</label>
             <input type="password" id="password" name="password" required>
         </div>
-
-        <button type="submit" class="btn-register">Registrarse</button>
+        <button type="submit" class="btn-primary">Registrarse</button>
     </form>
-
-    <a href="${pageContext.request.contextPath}/auth?action=login" class="btn-login">¿Ya tienes cuenta? Inicia Sesión</a>
+    <a href="${pageContext.request.contextPath}/auth?action=login" class="link">¿Ya tienes cuenta? Inicia Sesión</a>
 </div>
 </body>
 </html>
