@@ -42,11 +42,6 @@
             border-radius: 4px;
             box-sizing: border-box;
         }
-        input:focus {
-            outline: none;
-            border-color: #007bff;
-            box-shadow: 0 0 5px rgba(0,123,255,0.3);
-        }
         .btn-submit {
             width: 100%;
             padding: 12px;
@@ -58,9 +53,6 @@
             font-size: 16px;
             font-weight: bold;
         }
-        .btn-submit:hover {
-            background-color: #218838;
-        }
         .btn-cancel {
             display: block;
             text-align: center;
@@ -70,9 +62,6 @@
             color: white;
             text-decoration: none;
             border-radius: 4px;
-        }
-        .btn-cancel:hover {
-            background-color: #5a6268;
         }
         .error-message {
             background-color: #f8d7da;
@@ -87,34 +76,28 @@
 <div class="container">
     <h2>Agregar Nuevo Usuario</h2>
 
-    <% if (request.getAttribute("errorMessage") != null) { %>
-    <div class="error-message">
-        <%= request.getAttribute("errorMessage") %>
-    </div>
-    <% } %>
+    <c:if test="${not empty errorMessage}">
+        <div class="error-message">
+                ${errorMessage}
+        </div>
+    </c:if>
 
     <form action="${pageContext.request.contextPath}/user" method="post">
         <input type="hidden" name="action" value="insert">
 
         <div class="form-group">
             <label for="nombre">Nombre:</label>
-            <input type="text" id="nombre" name="nombre"
-                   value="<%= request.getParameter("nombre") != null ? request.getParameter("nombre") : "" %>"
-                   required>
+            <input type="text" id="nombre" name="nombre" value="${nombre}" required>
         </div>
 
         <div class="form-group">
             <label for="apellido">Apellido:</label>
-            <input type="text" id="apellido" name="apellido"
-                   value="<%= request.getParameter("apellido") != null ? request.getParameter("apellido") : "" %>"
-                   required>
+            <input type="text" id="apellido" name="apellido" value="${apellido}" required>
         </div>
 
         <div class="form-group">
             <label for="email">Email:</label>
-            <input type="email" id="email" name="email"
-                   value="<%= request.getParameter("email") != null ? request.getParameter("email") : "" %>"
-                   required>
+            <input type="email" id="email" name="email" value="${email}" required>
         </div>
 
         <div class="form-group">
