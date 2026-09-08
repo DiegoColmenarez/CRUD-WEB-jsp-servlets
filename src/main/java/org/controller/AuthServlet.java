@@ -25,6 +25,29 @@ public class AuthServlet extends HttpServlet {
         super.init();
         this.userRepository = new UserRepository();
     }
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String action = request.getParameter("action");
+        if ("logout".equals(action)) {
+            logout(request, response);
+        } else if ("register".equals(action)) {
+            showRegisterForm(request, response);
+        } else {
+            showLoginForm(request, response);
+        }
+    }
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String action = request.getParameter("action");
+
+        if ("login".equals(action)) {
+            login(request, response);
+        } else if ("register".equals(action)) {
+            register(request, response);
+        }
+    }
     private void showLoginForm(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         RequestDispatcher dispatcher = request.getRequestDispatcher("jsp/auth/login.jsp");
