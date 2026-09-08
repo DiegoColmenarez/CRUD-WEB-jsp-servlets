@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eliminar Usuario</title>
+    <title>Buscar Usuario para Eliminar</title>
     <style>
         * {
             margin: 0;
@@ -34,24 +34,31 @@
             text-align: center;
             margin-bottom: 30px;
         }
-        .user-info {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 30px;
-        }
-        .user-info p {
-            margin-bottom: 10px;
-            color: #555;
-        }
-        .user-info strong {
-            color: #333;
-        }
-        .warning {
-            color: #ff4757;
-            text-align: center;
+        .form-group {
             margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
             font-weight: 500;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        input:focus {
+            border-color: #667eea;
+            outline: none;
+        }
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            flex-direction: column;
         }
         .btn-danger {
             width: 100%;
@@ -62,13 +69,14 @@
             border-radius: 8px;
             font-size: 16px;
             cursor: pointer;
+            text-align: center;
+            text-decoration: none;
             transition: background 0.3s;
         }
         .btn-danger:hover {
             background: #ee2d3a;
         }
         .btn-secondary {
-            display: block;
             width: 100%;
             padding: 12px;
             background: #95a5a6;
@@ -79,45 +87,35 @@
             cursor: pointer;
             text-align: center;
             text-decoration: none;
-            margin-top: 10px;
             transition: background 0.3s;
         }
         .btn-secondary:hover {
             background: #7f8c8d;
         }
-        .error-message {
-            background: #ff4757;
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
     </style>
 </head>
 <body>
 <div class="container">
-    <h2>Confirmar Eliminación</h2>
-
-    <c:if test="${not empty errorMessage}">
-        <div class="error-message">${errorMessage}</div>
-    </c:if>
-
-    <div class="user-info">
-        <p><strong>ID:</strong> ${user.id.value}</p>
-        <p><strong>Nombre:</strong> ${user.name.value}</p>
-        <p><strong>Apellido:</strong> ${user.lastName.value}</p>
-        <p><strong>Email:</strong> ${user.email.value}</p>
-    </div>
-
-    <p class="warning">¿Está seguro que desea eliminar este usuario?</p>
-
-    <form action="${pageContext.request.contextPath}/user" method="post">
-        <input type="hidden" name="action" value="delete">
-        <input type="hidden" name="id" value="${user.id.value}">
-        <button type="submit" class="btn-danger">Eliminar Usuario</button>
+    <h2>Buscar Usuario para Eliminar</h2>
+    <form id="searchForm">
+        <div class="form-group">
+            <label for="id">ID del Usuario:</label>
+            <input type="number" id="id" name="id" required>
+        </div>
+        <div class="btn-group">
+            <button type="submit" class="btn-danger">Buscar Usuario</button>
+            <a href="${pageContext.request.contextPath}/menu.jsp" class="btn-secondary">Volver al Menú</a>
+        </div>
     </form>
-    <a href="${pageContext.request.contextPath}/menu.jsp" class="btn-secondary">Cancelar</a>
 </div>
+
+<script>
+    document.getElementById('searchForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const id = document.getElementById('id').value;
+        const contextPath = '${pageContext.request.contextPath}';
+        window.location.href = contextPath + '/user?action=delete&id=' + id;
+    });
+</script>
 </body>
 </html>

@@ -12,8 +12,12 @@ public class ConnectionFactory {
     static {
         DB_PROPERTIES = ConnectionConfig.loadDataBaseConfig();
         DB_URL = DB_PROPERTIES.getProperty("DB_URL");
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Driver PostgreSQL no encontrado", e);
+        }
     }
-
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(DB_URL, DB_PROPERTIES);
     }

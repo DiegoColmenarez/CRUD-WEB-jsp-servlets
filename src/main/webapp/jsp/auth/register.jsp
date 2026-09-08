@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eliminar Usuario</title>
+    <title>Registro de Usuario</title>
     <style>
         * {
             margin: 0;
@@ -34,56 +34,52 @@
             text-align: center;
             margin-bottom: 30px;
         }
-        .user-info {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 30px;
-        }
-        .user-info p {
-            margin-bottom: 10px;
-            color: #555;
-        }
-        .user-info strong {
-            color: #333;
-        }
-        .warning {
-            color: #ff4757;
-            text-align: center;
+        .form-group {
             margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
             font-weight: 500;
         }
-        .btn-danger {
+        input[type="email"],
+        input[type="password"],
+        input[type="text"] {
             width: 100%;
             padding: 12px;
-            background: #ff4757;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        input:focus {
+            border-color: #667eea;
+            outline: none;
+        }
+        .btn-primary {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
             border-radius: 8px;
             font-size: 16px;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: transform 0.3s;
         }
-        .btn-danger:hover {
-            background: #ee2d3a;
+        .btn-primary:hover {
+            transform: translateY(-2px);
         }
-        .btn-secondary {
+        .link {
             display: block;
-            width: 100%;
-            padding: 12px;
-            background: #95a5a6;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
             text-align: center;
+            margin-top: 20px;
+            color: #667eea;
             text-decoration: none;
-            margin-top: 10px;
-            transition: background 0.3s;
         }
-        .btn-secondary:hover {
-            background: #7f8c8d;
+        .link:hover {
+            text-decoration: underline;
         }
         .error-message {
             background: #ff4757;
@@ -97,27 +93,33 @@
 </head>
 <body>
 <div class="container">
-    <h2>Confirmar Eliminación</h2>
+    <h2>Registro de Usuario</h2>
 
     <c:if test="${not empty errorMessage}">
         <div class="error-message">${errorMessage}</div>
     </c:if>
 
-    <div class="user-info">
-        <p><strong>ID:</strong> ${user.id.value}</p>
-        <p><strong>Nombre:</strong> ${user.name.value}</p>
-        <p><strong>Apellido:</strong> ${user.lastName.value}</p>
-        <p><strong>Email:</strong> ${user.email.value}</p>
-    </div>
-
-    <p class="warning">¿Está seguro que desea eliminar este usuario?</p>
-
-    <form action="${pageContext.request.contextPath}/user" method="post">
-        <input type="hidden" name="action" value="delete">
-        <input type="hidden" name="id" value="${user.id.value}">
-        <button type="submit" class="btn-danger">Eliminar Usuario</button>
+    <form action="${pageContext.request.contextPath}/auth" method="post">
+        <input type="hidden" name="action" value="register">
+        <div class="form-group">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" required>
+        </div>
+        <div class="form-group">
+            <label for="apellido">Apellido:</label>
+            <input type="text" id="apellido" name="apellido" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Contraseña:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <button type="submit" class="btn-primary">Registrarse</button>
     </form>
-    <a href="${pageContext.request.contextPath}/menu.jsp" class="btn-secondary">Cancelar</a>
+    <a href="${pageContext.request.contextPath}/auth?action=login" class="link">¿Ya tienes cuenta? Inicia Sesión</a>
 </div>
 </body>
 </html>
