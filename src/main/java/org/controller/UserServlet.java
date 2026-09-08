@@ -49,6 +49,12 @@ public class UserServlet extends HttpServlet {
                 case "list":
                     listUsers(request, response);
                     break;
+                case "searchByName":
+                    searchUsersByName(request, response);
+                    break;
+                case "searchByLastName":
+                    searchUsersByLastName(request, response);
+                    break;
                 default:
                     response.sendRedirect("/menu.jsp");
                     break;
