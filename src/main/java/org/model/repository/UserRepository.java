@@ -131,14 +131,14 @@ public class UserRepository {
             throw RepositoryException.repositoryGeneralException(e);
         }
     }
-    public User findByName(UserName userName){
+    public List<User> findByName(UserName userName){
         String sql =  "SELECT nombre, apellido, email, tipo FROM users WHERE nombre = ?";
         try (Connection connection = ConnectionFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, userName.value());
             try (ResultSet resultSet = statement.executeQuery()){
                 if (resultSet.next()){
-                    return User.createUser(
+                    return User.createUsers(
                             new UserName(resultSet.getString("nombre")),
                             new UserName(resultSet.getString("apellido")),
                             new UserEmail(resultSet.getString("email")),
@@ -152,14 +152,14 @@ public class UserRepository {
         }
     }
 
-    public User findByLastName(UserName userName){
+    public List<User> findByLastName(UserName userName){
         String sql =  "SELECT nombre, apellido, email, tipo FROM users WHERE apellido = ?";
         try (Connection connection = ConnectionFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, userName.value());
             try (ResultSet resultSet = statement.executeQuery()){
                 if (resultSet.next()){
-                    return User.createUser(
+                    return User.createUsers(
                             new UserName(resultSet.getString("nombre")),
                             new UserName(resultSet.getString("apellido")),
                             new UserEmail(resultSet.getString("email")),
