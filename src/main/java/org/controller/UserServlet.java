@@ -15,6 +15,7 @@ import org.model.vo.UserName;
 import org.model.vo.UserPassword;
 
 import java.io.IOException;
+import java.util.List;
 
 @WebServlet(name = "UserServlet", value = "/user")
 public class UserServlet extends HttpServlet {
@@ -46,8 +47,10 @@ public class UserServlet extends HttpServlet {
                     showDeleteConfirmation(request, response);
                     break;
                 case "list":
+                    listUsers(request, response);
+                    break;
                 default:
-
+                    response.sendRedirect("/menu.jsp");
                     break;
             }
         } catch (Exception e) {
@@ -171,5 +174,12 @@ public class UserServlet extends HttpServlet {
         } catch (NumberFormatException e) {
             response.sendRedirect("/menu.jsp");
         }
+    }
+    private void listUsers(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        List<User> users = userRepository.listAllUsers();
+        request.setAttribute("users", users);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("jsp/user/list.jsp");
+        dispatcher.forward(request, response);
     }
 }
