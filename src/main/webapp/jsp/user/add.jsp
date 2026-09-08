@@ -123,7 +123,7 @@
         </div>
 
         <button type="submit" class="btn-submit">Guardar Usuario</button>
-        <a href="${pageContext.request.contextPath}/user?action=list" class="btn-cancel">Cancelar</a>
+        <a href="${pageContext.request.contextPath}/menu.jsp" class="btn-cancel">Cancelar</a>
     </form>
 </div>
 </body>
