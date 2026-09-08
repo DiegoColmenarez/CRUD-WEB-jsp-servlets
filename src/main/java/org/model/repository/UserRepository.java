@@ -151,4 +151,25 @@ public class UserRepository {
             throw RepositoryException.repositoryGeneralException(e);
         }
     }
+
+    public User findByLastName(UserName userName){
+        String sql =  "SELECT nombre, apellido, email, tipo FROM users WHERE apellido = ?";
+        try (Connection connection = ConnectionFactory.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, userName.value());
+            try (ResultSet resultSet = statement.executeQuery()){
+                if (resultSet.next()){
+                    return User.createUser(
+                            new UserName(resultSet.getString("nombre")),
+                            new UserName(resultSet.getString("apellido")),
+                            new UserEmail(resultSet.getString("email")),
+                            new UserType(TypeUser.valueOf(resultSet.getString("tipo").toUpperCase()))
+                    );
+                }
+                throw UserNotFoundException.becauseLastNameDoesExist(userName);
+            }
+        } catch (SQLException e) {
+            throw RepositoryException.repositoryGeneralException(e);
+        }
+    }
 }
