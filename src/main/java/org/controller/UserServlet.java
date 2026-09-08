@@ -67,6 +67,7 @@ public class UserServlet extends HttpServlet {
                 case "update":
                     break;
                 case "delete":
+                    deleteUser(request, response);
                     break;
                 default:
                     response.sendRedirect(request.getContextPath() + "/menu.jsp?mensaje=OperacionRealizadaConExito");
@@ -100,8 +101,7 @@ public class UserServlet extends HttpServlet {
             response.sendRedirect("/menu.jsp");
         } catch (DomainException e) {
             request.setAttribute("errorMessage", e.getMessage());
-            RequestDispatcher dispatcher = request.getRequestDispatcher("jsp/user/add.jsp");
-            dispatcher.forward(request, response);
+           showAddForm(request, response);
         }
     }
 
@@ -116,6 +116,21 @@ public class UserServlet extends HttpServlet {
             dispatcher.forward(request, response);
         } catch (NumberFormatException e) {
             response.sendRedirect("/menu.jsp");
+        }
+    }
+
+    private void deleteUser(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+            int id = Integer.parseInt(request.getParameter("id"));
+            UserId userId = new UserId(id);
+            userRepository.deleteUser(userId);
+            response.sendRedirect("/menu.jsp");
+        } catch (DomainException e) {
+            request.setAttribute("errorMessage", e.getMessage());
+            showDeleteConfirmation(request, response);
+        } catch (NumberFormatException e) {
+            response.sendRedirect("menu.jsp");
         }
     }
 }
