@@ -24,5 +24,10 @@ public class AuthServlet extends HttpServlet {
         RequestDispatcher dispatcher = request.getRequestDispatcher("jsp/auth/login.jsp");
         dispatcher.forward(request, response);
     }
+    private void showRegisterForm(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        RequestDispatcher dispatcher = request.getRequestDispatcher("jsp/auth/register.jsp");
+        dispatcher.forward(request, response);
+    }
 }
 
