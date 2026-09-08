@@ -40,6 +40,7 @@ public class UserServlet extends HttpServlet {
                     showAddForm(request, response);
                     break;
                 case "edit":
+                    showEditForm(request, response);
                     break;
                 case "delete":
                     showDeleteConfirmation(request, response);
@@ -65,6 +66,7 @@ public class UserServlet extends HttpServlet {
                     insertUser(request, response);
                     break;
                 case "update":
+                    updateUser(request, response);
                     break;
                 case "delete":
                     deleteUser(request, response);
@@ -143,6 +145,29 @@ public class UserServlet extends HttpServlet {
             request.setAttribute("user", user);
             RequestDispatcher dispatcher = request.getRequestDispatcher("jsp/user/modify.jsp");
             dispatcher.forward(request, response);
+        } catch (NumberFormatException e) {
+            response.sendRedirect("/menu.jsp");
+        }
+    }
+
+    private void updateUser(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+            int id = Integer.parseInt(request.getParameter("id"));
+            String name = request.getParameter("nombre");
+            String lastName = request.getParameter("apellido");
+            String email = request.getParameter("email");
+            User updatedUser = User.createUser(
+                    new UserId(id),
+                    new UserName(name),
+                    new UserName(lastName),
+                    new UserEmail(email)
+            );
+            userRepository.updateUser(updatedUser);
+            response.sendRedirect("/menu.jsp");
+        } catch (DomainException e) {
+            request.setAttribute("errorMessage", e.getMessage());
+            showEditForm(request, response);
         } catch (NumberFormatException e) {
             response.sendRedirect("/menu.jsp");
         }
