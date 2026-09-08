@@ -131,45 +131,47 @@ public class UserRepository {
             throw RepositoryException.repositoryGeneralException(e);
         }
     }
-    public List<User> findByName(UserName userName){
-        String sql =  "SELECT nombre, apellido, email, tipo FROM users WHERE nombre = ?";
+    public List<User> findByName(UserName userName) {
+        String sql = "SELECT id, nombre, apellido, email, tipo FROM users WHERE nombre = ?";
+        List<User> users = new ArrayList<>();
         try (Connection connection = ConnectionFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, userName.value());
-            try (ResultSet resultSet = statement.executeQuery()){
-                if (resultSet.next()){
-                    return User.createUsers(
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    users.add(User.createUser(
                             new UserName(resultSet.getString("nombre")),
                             new UserName(resultSet.getString("apellido")),
                             new UserEmail(resultSet.getString("email")),
                             new UserType(TypeUser.valueOf(resultSet.getString("tipo").toUpperCase()))
-                   );
+                    ));
                 }
-                throw UserNotFoundException.becauseNameDoesExist(userName);
             }
         } catch (SQLException e) {
             throw RepositoryException.repositoryGeneralException(e);
         }
+        return users;
     }
 
-    public List<User> findByLastName(UserName userName){
-        String sql =  "SELECT nombre, apellido, email, tipo FROM users WHERE apellido = ?";
+    public List<User> findByLastName(UserName lastName) {
+        String sql = "SELECT id, nombre, apellido, email, tipo FROM users WHERE apellido = ?";
+        List<User> users = new ArrayList<>();
         try (Connection connection = ConnectionFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, userName.value());
-            try (ResultSet resultSet = statement.executeQuery()){
-                if (resultSet.next()){
-                    return User.createUsers(
+            statement.setString(1, lastName.value());
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    users.add(User.createUser(
                             new UserName(resultSet.getString("nombre")),
                             new UserName(resultSet.getString("apellido")),
                             new UserEmail(resultSet.getString("email")),
                             new UserType(TypeUser.valueOf(resultSet.getString("tipo").toUpperCase()))
-                    );
+                    ));
                 }
-                throw UserNotFoundException.becauseLastNameDoesExist(userName);
             }
         } catch (SQLException e) {
             throw RepositoryException.repositoryGeneralException(e);
         }
+        return users;
     }
 }

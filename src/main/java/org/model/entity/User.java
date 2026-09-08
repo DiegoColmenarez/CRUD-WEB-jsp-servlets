@@ -93,15 +93,14 @@ public class User {
     ){
         return new User(id, name, lastName, email);
     }
-    public static List<User> createUsers(
+    public static User createUser(
             UserName name,
             UserName lastName,
             UserEmail email,
             UserType type
     ) {
-        List<User> users = new ArrayList<>();
-        users.add(new User(name, lastName, email, type));
-        return users;
+        return new User(name, lastName, email, type);
+
     }
     public UserName getName() {
         return name;
