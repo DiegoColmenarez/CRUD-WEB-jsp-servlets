@@ -118,6 +118,15 @@ public class UserServlet extends HttpServlet {
         dispatcher.forward(request, response);
     }
 
+    private void searchUsersByLastName(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String apellido = request.getParameter("apellido");
+        List<User> users = userRepository.findByLastName(new UserName(apellido));
+        request.setAttribute("users", users);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("jsp/user/list.jsp");
+        dispatcher.forward(request, response);
+    }
+
     private void showDeleteConfirmation(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         RequestDispatcher dispatcher = null;
