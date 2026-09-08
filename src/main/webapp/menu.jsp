@@ -93,8 +93,8 @@
     <div class="menu-grid">
         <a href="${pageContext.request.contextPath}/user?action=list" class="menu-item">Listar Usuarios</a>
         <a href="${pageContext.request.contextPath}/user?action=add" class="menu-item">Agregar Usuario</a>
-        <a href="${pageContext.request.contextPath}/jsp/user/search.jsp" class="menu-item">Modificar Usuario</a>
-        <a href="${pageContext.request.contextPath}/jsp/user/search.jsp" class="menu-item">Eliminar Usuario</a>
+        <a href="${pageContext.request.contextPath}/jsp/user/searchModify.jsp" class="menu-item">Modificar Usuario</a>
+        <a href="${pageContext.request.contextPath}/jsp/user/searchDelete.jsp" class="menu-item">Eliminar Usuario</a>
         <a href="${pageContext.request.contextPath}/user?action=edit&id=${sessionScope.user.id.value}" class="menu-item">Modificar Mis Datos</a>
     </div>
 

@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buscar Usuario</title>
+    <title>Buscar Usuario para Eliminar</title>
     <style>
         * {
             margin: 0;
@@ -43,8 +43,7 @@
             color: #555;
             font-weight: 500;
         }
-        input[type="number"],
-        select {
+        input[type="number"] {
             width: 100%;
             padding: 12px;
             border: 2px solid #e0e0e0;
@@ -52,8 +51,7 @@
             font-size: 16px;
             transition: border-color 0.3s;
         }
-        input:focus,
-        select:focus {
+        input:focus {
             border-color: #667eea;
             outline: none;
         }
@@ -62,10 +60,10 @@
             gap: 10px;
             flex-direction: column;
         }
-        .btn-primary {
+        .btn-danger {
             width: 100%;
             padding: 12px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #ff4757;
             color: white;
             border: none;
             border-radius: 8px;
@@ -73,10 +71,10 @@
             cursor: pointer;
             text-align: center;
             text-decoration: none;
-            transition: transform 0.3s;
+            transition: background 0.3s;
         }
-        .btn-primary:hover {
-            transform: translateY(-2px);
+        .btn-danger:hover {
+            background: #ee2d3a;
         }
         .btn-secondary {
             width: 100%;
@@ -98,21 +96,14 @@
 </head>
 <body>
 <div class="container">
-    <h2>Buscar Usuario por ID</h2>
+    <h2>Buscar Usuario para Eliminar</h2>
     <form id="searchForm">
         <div class="form-group">
             <label for="id">ID del Usuario:</label>
             <input type="number" id="id" name="id" required>
         </div>
-        <div class="form-group">
-            <label for="action">Acción:</label>
-            <select id="action" name="action">
-                <option value="edit">Modificar</option>
-                <option value="delete">Eliminar</option>
-            </select>
-        </div>
         <div class="btn-group">
-            <button type="submit" class="btn-primary">Continuar</button>
+            <button type="submit" class="btn-danger">Buscar Usuario</button>
             <a href="${pageContext.request.contextPath}/menu.jsp" class="btn-secondary">Volver al Menú</a>
         </div>
     </form>
@@ -122,9 +113,8 @@
     document.getElementById('searchForm').addEventListener('submit', function(e) {
         e.preventDefault();
         const id = document.getElementById('id').value;
-        const action = document.getElementById('action').value;
         const contextPath = '${pageContext.request.contextPath}';
-        window.location.href = contextPath + '/user?action=' + action + '&id=' + id;
+        window.location.href = contextPath + '/user?action=delete&id=' + id;
     });
 </script>
 </body>
