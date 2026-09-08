@@ -6,6 +6,8 @@ import org.model.exceptions.InvalidEmailUserException;
 import org.model.vo.UserEmail;
 import org.model.vo.UserId;
 import org.model.vo.UserName;
+import org.model.vo.UserPassword;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -86,10 +88,10 @@ public class UserRepository {
     }
     public User findById(UserId id) {
         String sql = "SELECT id, nombre, apellido, email FROM users WHERE id = ?";
-        try (Connection conn = ConnectionFactory.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, id.value());
-            try (ResultSet resultSet = stmt.executeQuery()) {
+        try (Connection connection = ConnectionFactory.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, id.value());
+            try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     return User.createUser(
                             new UserId(resultSet.getInt("id")),
@@ -99,6 +101,31 @@ public class UserRepository {
                     );
                 }
                 throw UserNotFoundException.becauseIdDoesExist(id);
+            }
+        } catch (SQLException e) {
+            throw RepositoryException.repositoryGeneralException(e);
+        }
+    }
+
+    public User authenticate(UserEmail email, UserPassword password) {
+        String sql = "SELECT id, nombre, apellido, email FROM users WHERE email = ? AND password = ?";
+
+        try (Connection connection = ConnectionFactory.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setString(1, email.value());
+            statement.setString(2, password.value());
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return User.createUser(
+                            new UserId(resultSet.getInt("id")),
+                            new UserName(resultSet.getString("nombre")),
+                            new UserName(resultSet.getString("apellido")),
+                            new UserEmail(resultSet.getString("email"))
+                    );
+                }
+                throw new RuntimeException();
             }
         } catch (SQLException e) {
             throw RepositoryException.repositoryGeneralException(e);

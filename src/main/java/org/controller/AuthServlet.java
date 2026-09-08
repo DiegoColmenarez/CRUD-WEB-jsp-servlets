@@ -6,7 +6,12 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import org.model.entity.User;
+import org.model.exceptions.DomainException;
 import org.model.repository.UserRepository;
+import org.model.vo.UserEmail;
+import org.model.vo.UserPassword;
 
 import java.io.IOException;
 
@@ -29,5 +34,6 @@ public class AuthServlet extends HttpServlet {
         RequestDispatcher dispatcher = request.getRequestDispatcher("jsp/auth/register.jsp");
         dispatcher.forward(request, response);
     }
+
 }
 
