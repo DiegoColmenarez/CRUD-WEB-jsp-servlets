@@ -146,16 +146,21 @@ public class UserServlet extends HttpServlet {
 
     private void showEditForm(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        RequestDispatcher dispatcher = null;
         try {
             int id = Integer.parseInt(request.getParameter("id"));
             UserId userId = new UserId(id);
             User user = userRepository.findById(userId);
             request.setAttribute("user", user);
-            RequestDispatcher dispatcher = request.getRequestDispatcher("jsp/user/modify.jsp");
+            dispatcher = request.getRequestDispatcher("jsp/user/modify.jsp");
             dispatcher.forward(request, response);
         } catch (NumberFormatException e) {
             response.sendRedirect("/menu.jsp");
-        }
+        } catch (DomainException e) {
+            request.setAttribute("errorMessage", e.getMessage());
+            dispatcher = request.getRequestDispatcher("jsp/user/searchModify.jsp");
+            dispatcher.forward(request, response);
+    }
     }
 
     private void updateUser(HttpServletRequest request, HttpServletResponse response)
