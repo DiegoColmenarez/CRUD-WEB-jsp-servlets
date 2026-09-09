@@ -5,19 +5,29 @@ public class InvalidProcessorException extends DomainException {
         super(message);
     }
 
-    private static final String MESSAGE_MARCA_INVALID = "Processor brand is invalid";
-    private static final String MESSAGE_VELOCIDAD_INVALID = "Processor speed is invalid";
-    private static final String MESSAGE_VELOCIDAD_FORMAT_INVALID = "Processor speed format is invalid, expected format: 3.5GHz";
+    private static final String MESSAGE_BRAND_NULL = "Processor brand is invalid. Brand is Null";
+    private static final String MESSAGE_BRAND_EMPTY = "Processor brand is invalid, it cannot be empty";
+    private static final String MESSAGE_SPEED_NULL = "Processor speed is invalid. Speed is Null";
+    private static final String MESSAGE_SPEED_EMPTY = "Processor speed is invalid, it cannot be empty";
+    private static final String MESSAGE_SPEED_FORMAT_INVALID = "Processor speed format is invalid, expected format: 3.5GHz";
 
-    public static InvalidProcessorException becauseMarcaIsInvalid() {
-        return new InvalidProcessorException(MESSAGE_MARCA_INVALID);
+    public static InvalidProcessorException becauseBrandIsNull() {
+        return new InvalidProcessorException(MESSAGE_BRAND_NULL);
     }
 
-    public static InvalidProcessorException becauseVelocidadIsInvalid() {
-        return new InvalidProcessorException(MESSAGE_VELOCIDAD_INVALID);
+    public static InvalidProcessorException becauseBrandIsEmpty() {
+        return new InvalidProcessorException(MESSAGE_BRAND_EMPTY);
     }
 
-    public static InvalidProcessorException becauseVelocidadFormatIsInvalid() {
-        return new InvalidProcessorException(MESSAGE_VELOCIDAD_FORMAT_INVALID);
+    public static InvalidProcessorException becauseSpeedIsNull() {
+        return new InvalidProcessorException(MESSAGE_SPEED_NULL);
+    }
+
+    public static InvalidProcessorException becauseSpeedIsEmpty() {
+        return new InvalidProcessorException(MESSAGE_SPEED_EMPTY);
+    }
+
+    public static InvalidProcessorException becauseSpeedFormatIsInvalid() {
+        return new InvalidProcessorException(MESSAGE_SPEED_FORMAT_INVALID);
     }
 }

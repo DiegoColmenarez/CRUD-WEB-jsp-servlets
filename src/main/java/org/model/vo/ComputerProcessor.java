@@ -2,31 +2,45 @@ package org.model.vo;
 
 import org.model.exceptions.InvalidProcessorException;
 
-public record ComputerProcessor(String marcaCpu, String velocidadCpu) {
+public record ComputerProcessor(String cpuBrand, String cpuSpeed) {
 
-    private static void validateMarcaCpu(String marcaCpu) {
-        if (marcaCpu == null || marcaCpu.trim().isEmpty()) {
-            throw InvalidProcessorException.becauseMarcaIsInvalid();
+    private static void validateCpuBrandNull(String cpuBrand) {
+        if (cpuBrand == null) {
+            throw InvalidProcessorException.becauseBrandIsNull();
         }
     }
 
-    private static void validateVelocidadCpu(String velocidadCpu) {
-        if (velocidadCpu == null || velocidadCpu.trim().isEmpty()) {
-            throw InvalidProcessorException.becauseVelocidadIsInvalid();
+    private static void validateCpuBrandEmpty(String cpuBrand) {
+        if (cpuBrand.trim().isEmpty()) {
+            throw InvalidProcessorException.becauseBrandIsEmpty();
         }
     }
 
-    private static void validateVelocidadFormat(String velocidadCpu) {
-        if (!velocidadCpu.matches("^\\d+(\\.\\d+)?\\s*(GHz|MHz)$")) {
-            throw InvalidProcessorException.becauseVelocidadFormatIsInvalid();
+    private static void validateCpuSpeedNull(String cpuSpeed) {
+        if (cpuSpeed == null) {
+            throw InvalidProcessorException.becauseSpeedIsNull();
+        }
+    }
+
+    private static void validateCpuSpeedEmpty(String cpuSpeed) {
+        if (cpuSpeed.trim().isEmpty()) {
+            throw InvalidProcessorException.becauseSpeedIsEmpty();
+        }
+    }
+
+    private static void validateSpeedFormat(String cpuSpeed) {
+        if (!cpuSpeed.matches("^\\d+(\\.\\d+)?\\s*(GHz|MHz)$")) {
+            throw InvalidProcessorException.becauseSpeedFormatIsInvalid();
         }
     }
 
     public ComputerProcessor {
-        validateMarcaCpu(marcaCpu);
-        validateVelocidadCpu(velocidadCpu);
-        validateVelocidadFormat(velocidadCpu.trim());
-        marcaCpu = marcaCpu.trim().toUpperCase();
-        velocidadCpu = velocidadCpu.trim().toUpperCase();
+        validateCpuBrandNull(cpuBrand);
+        validateCpuBrandEmpty(cpuBrand);
+        validateCpuSpeedNull(cpuSpeed);
+        validateCpuSpeedEmpty(cpuSpeed);
+        validateSpeedFormat(cpuSpeed.trim());
+        cpuBrand = cpuBrand.trim().toUpperCase();
+        cpuSpeed = cpuSpeed.trim().toUpperCase();
     }
 }
