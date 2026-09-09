@@ -49,6 +49,12 @@ public class UserServlet extends HttpServlet {
                 case "list":
                     listUsers(request, response);
                     break;
+                case "searchByName":
+                    searchUsersByName(request, response);
+                    break;
+                case "searchByLastName":
+                    searchUsersByLastName(request, response);
+                    break;
                 default:
                     response.sendRedirect("/menu.jsp");
                     break;
@@ -108,6 +114,23 @@ public class UserServlet extends HttpServlet {
             request.setAttribute("errorMessage", e.getMessage());
            showAddForm(request, response);
         }
+    }
+    private void searchUsersByName(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String nombre = request.getParameter("nombre");
+        List<User> users = userRepository.findByName(new UserName(nombre));
+        request.setAttribute("users", users);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("jsp/user/list.jsp");
+        dispatcher.forward(request, response);
+    }
+
+    private void searchUsersByLastName(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String apellido = request.getParameter("apellido");
+        List<User> users = userRepository.findByLastName(new UserName(apellido));
+        request.setAttribute("users", users);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("jsp/user/list.jsp");
+        dispatcher.forward(request, response);
     }
 
     private void showDeleteConfirmation(HttpServletRequest request, HttpServletResponse response)

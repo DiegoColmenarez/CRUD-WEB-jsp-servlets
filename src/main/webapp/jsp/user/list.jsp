@@ -82,6 +82,7 @@
                     <th>Nombre</th>
                     <th>Apellido</th>
                     <th>Email</th>
+                    <th>Tipo de Usuario</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -91,6 +92,7 @@
                         <td>${user.name.value}</td>
                         <td>${user.lastName.value}</td>
                         <td>${user.email.value}</td>
+                        <td>${user.type.value}</td>
                     </tr>
                 </c:forEach>
                 </tbody>

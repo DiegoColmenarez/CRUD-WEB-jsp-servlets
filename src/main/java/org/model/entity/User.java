@@ -3,6 +3,9 @@ package org.model.entity;
 import org.model.enums.TypeUser;
 import org.model.vo.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class User {
     private UserName name;
     private UserName lastName;
@@ -50,6 +53,17 @@ public class User {
         this.lastName = lastName;
         this.email = email;
     }
+    private User(
+            UserName name,
+            UserName lastName,
+            UserEmail email,
+            UserType type
+    ){
+        this.name = name;
+        this.lastName = lastName;
+        this.email = email;
+        this.type = type;
+    }
 
     public static User createUser(
             UserName name,
@@ -79,7 +93,15 @@ public class User {
     ){
         return new User(id, name, lastName, email);
     }
+    public static User createUser(
+            UserName name,
+            UserName lastName,
+            UserEmail email,
+            UserType type
+    ) {
+        return new User(name, lastName, email, type);
 
+    }
     public UserName getName() {
         return name;
     }

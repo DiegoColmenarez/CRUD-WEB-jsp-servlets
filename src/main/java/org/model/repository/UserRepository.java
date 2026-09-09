@@ -2,13 +2,11 @@ package org.model.repository;
 
 import org.model.config.ConnectionFactory;
 import org.model.entity.User;
+import org.model.enums.TypeUser;
 import org.model.exceptions.InvalidCredentialsException;
 import org.model.exceptions.InvalidEmailUserException;
 import org.model.exceptions.UserNotFoundException;
-import org.model.vo.UserEmail;
-import org.model.vo.UserId;
-import org.model.vo.UserName;
-import org.model.vo.UserPassword;
+import org.model.vo.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -132,5 +130,48 @@ public class UserRepository {
         } catch (SQLException e) {
             throw RepositoryException.repositoryGeneralException(e);
         }
+    }
+    public List<User> findByName(UserName userName) {
+        String sql = "SELECT id, nombre, apellido, email, tipo FROM users WHERE nombre = ?";
+        List<User> users = new ArrayList<>();
+        try (Connection connection = ConnectionFactory.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, userName.value());
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    users.add(User.createUser(
+                            new UserName(resultSet.getString("nombre")),
+                            new UserName(resultSet.getString("apellido")),
+                            new UserEmail(resultSet.getString("email")),
+                            new UserType(TypeUser.valueOf(resultSet.getString("tipo").toUpperCase()))
+                    ));
+                }
+            }
+        } catch (SQLException e) {
+            throw RepositoryException.repositoryGeneralException(e);
+        }
+        return users;
+    }
+
+    public List<User> findByLastName(UserName lastName) {
+        String sql = "SELECT id, nombre, apellido, email, tipo FROM users WHERE apellido = ?";
+        List<User> users = new ArrayList<>();
+        try (Connection connection = ConnectionFactory.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, lastName.value());
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    users.add(User.createUser(
+                            new UserName(resultSet.getString("nombre")),
+                            new UserName(resultSet.getString("apellido")),
+                            new UserEmail(resultSet.getString("email")),
+                            new UserType(TypeUser.valueOf(resultSet.getString("tipo").toUpperCase()))
+                    ));
+                }
+            }
+        } catch (SQLException e) {
+            throw RepositoryException.repositoryGeneralException(e);
+        }
+        return users;
     }
 }
