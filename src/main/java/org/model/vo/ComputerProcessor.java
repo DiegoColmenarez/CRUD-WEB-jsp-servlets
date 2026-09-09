@@ -1,7 +1,6 @@
 package org.model.vo;
 
 import org.model.exceptions.InvalidProcessorException;
-import java.util.Objects;
 
 public record ComputerProcessor(String marcaCpu, String velocidadCpu) {
 
