@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eliminar Usuario</title>
+    <title>Buscar Usuario por Nombre</title>
     <style>
         * {
             margin: 0;
@@ -34,41 +34,49 @@
             text-align: center;
             margin-bottom: 30px;
         }
-        .user-info {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 30px;
-        }
-        .user-info p {
-            margin-bottom: 10px;
-            color: #555;
-        }
-        .user-info strong {
-            color: #333;
-        }
-        .warning {
-            color: #ff4757;
-            text-align: center;
+        .form-group {
             margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
             font-weight: 500;
         }
-        .btn-danger {
+        input[type="text"] {
             width: 100%;
             padding: 12px;
-            background: #ff4757;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        input:focus {
+            border-color: #667eea;
+            outline: none;
+        }
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            flex-direction: column;
+        }
+        .btn-primary {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
             border-radius: 8px;
             font-size: 16px;
             cursor: pointer;
-            transition: background 0.3s;
+            text-align: center;
+            text-decoration: none;
+            transition: transform 0.3s;
         }
-        .btn-danger:hover {
-            background: #ee2d3a;
+        .btn-primary:hover {
+            transform: translateY(-2px);
         }
         .btn-secondary {
-            display: block;
             width: 100%;
             padding: 12px;
             background: #95a5a6;
@@ -79,7 +87,6 @@
             cursor: pointer;
             text-align: center;
             text-decoration: none;
-            margin-top: 10px;
             transition: background 0.3s;
         }
         .btn-secondary:hover {
@@ -97,27 +104,24 @@
 </head>
 <body>
 <div class="container">
-    <h2>Confirmar Eliminación</h2>
+    <h2>Buscar Usuario por Apellido</h2>
 
     <c:if test="${not empty errorMessage}">
         <div class="error-message">${errorMessage}</div>
     </c:if>
 
-    <div class="user-info">
-        <p><strong>ID:</strong> ${user.id.value}</p>
-        <p><strong>Nombre:</strong> ${user.name.value}</p>
-        <p><strong>Apellido:</strong> ${user.lastName.value}</p>
-        <p><strong>Email:</strong> ${user.email.value}</p>
-    </div>
+    <form action="${pageContext.request.contextPath}/user" method="GET">
+        <input type="hidden" name="action" value="searchByLastName">
+        <div class="form-group">
+            <label for="apellido">Apellido del Usuario:</label>
+            <input type="text" id="apellido" name="apellido" required>
+        </div>
 
-    <p class="warning">¿Está seguro que desea eliminar este usuario?</p>
-
-    <form action="${pageContext.request.contextPath}/user" method="post">
-        <input type="hidden" name="action" value="delete">
-        <input type="hidden" name="id" value="${user.id.value}">
-        <button type="submit" class="btn-danger">Eliminar Usuario</button>
+        <div class="btn-group">
+            <button type="submit" class="btn-primary">Buscar Usuario</button>
+            <a href="${pageContext.request.contextPath}/menu.jsp" class="btn-secondary">Volver al Menú</a>
+        </div>
     </form>
-    <a href="${pageContext.request.contextPath}/menu.jsp" class="btn-secondary">Cancelar</a>
 </div>
 </body>
 </html>
