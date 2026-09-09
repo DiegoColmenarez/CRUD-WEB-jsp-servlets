@@ -1,33 +1,39 @@
 package org.model.vo;
 
+import org.model.enums.RamTechnology;
 import org.model.exceptions.InvalidMemoryException;
 
+public record ComputerMemory(RamTechnology ramTechnology, String ramCapacity) {
 
-public record ComputerMemory(String tecnologiaRam, String capacidadRam) {
-
-    private static void validateTecnologiaRam(String tecnologiaRam) {
-        if (tecnologiaRam == null || tecnologiaRam.trim().isEmpty()) {
-            throw InvalidMemoryException.becauseTecnologiaIsInvalid();
+    private static void validateRamTechnologyNull(RamTechnology ramTechnology) {
+        if (ramTechnology == null) {
+            throw InvalidMemoryException.becauseTechnologyIsNull();
         }
     }
 
-    private static void validateCapacidadRam(String capacidadRam) {
-        if (capacidadRam == null || capacidadRam.trim().isEmpty()) {
-            throw InvalidMemoryException.becauseCapacidadIsInvalid();
+    private static void validateRamCapacityNull(String ramCapacity) {
+        if (ramCapacity == null) {
+            throw InvalidMemoryException.becauseCapacityIsNull();
         }
     }
 
-    private static void validateCapacidadFormat(String capacidadRam) {
-        if (!capacidadRam.matches("^\\d+\\s*(GB|MB)$")) {
-            throw InvalidMemoryException.becauseCapacidadFormatIsInvalid();
+    private static void validateRamCapacityEmpty(String ramCapacity) {
+        if (ramCapacity.trim().isEmpty()) {
+            throw InvalidMemoryException.becauseCapacityIsEmpty();
+        }
+    }
+
+    private static void validateCapacityFormat(String ramCapacity) {
+        if (!ramCapacity.matches("^\\d+\\s*(GB|MB)$")) {
+            throw InvalidMemoryException.becauseCapacityFormatIsInvalid();
         }
     }
 
     public ComputerMemory {
-        validateTecnologiaRam(tecnologiaRam);
-        validateCapacidadRam(capacidadRam);
-        validateCapacidadFormat(capacidadRam.trim());
-        tecnologiaRam = tecnologiaRam.trim().toUpperCase();
-        capacidadRam = capacidadRam.trim().toUpperCase();
+        validateRamTechnologyNull(ramTechnology);
+        validateRamCapacityNull(ramCapacity);
+        validateRamCapacityEmpty(ramCapacity);
+        validateCapacityFormat(ramCapacity.trim());
+        ramCapacity = ramCapacity.trim().toUpperCase();
     }
 }
