@@ -91,7 +91,9 @@
     </div>
 
     <div class="menu-grid">
-        <a href="${pageContext.request.contextPath}/user?action=list" class="menu-item">Listar Usuarios</a>
+        <a href="${pageContext.request.contextPath}/user?action=list" class="menu-item">Listar Todos</a>
+        <a href="${pageContext.request.contextPath}/jsp/user/searchName.jsp" class="menu-item">Buscar por Nombre</a>
+        <a href="${pageContext.request.contextPath}/jsp/user/searchLastName.jsp" class="menu-item">Buscar por Apellido</a>
         <a href="${pageContext.request.contextPath}/user?action=add" class="menu-item">Agregar Usuario</a>
         <a href="${pageContext.request.contextPath}/jsp/user/searchModify.jsp" class="menu-item">Modificar Usuario</a>
         <a href="${pageContext.request.contextPath}/jsp/user/searchDelete.jsp" class="menu-item">Eliminar Usuario</a>
