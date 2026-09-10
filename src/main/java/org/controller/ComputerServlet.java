@@ -15,6 +15,7 @@ import org.model.repository.ComputerRepository;
 import org.model.vo.*;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.List;
 
 @WebServlet(name = "ComputerServlet", value = "/computer")
 public class ComputerServlet extends HttpServlet {
@@ -161,5 +162,13 @@ public class ComputerServlet extends HttpServlet {
             request.setAttribute("errorMessage", "Error en el formato de los datos numéricos");
             showEditForm(request, response);
         }
+    }
+
+    private void listComputers(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        List<Computer> computers = computerRepository.listAllComputers();
+        request.setAttribute("computers", computers);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("jsp/computer/list.jsp");
+        dispatcher.forward(request, response);
     }
 }
