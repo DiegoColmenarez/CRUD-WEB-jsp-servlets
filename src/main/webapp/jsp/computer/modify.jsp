@@ -116,73 +116,73 @@
 
     <form action="${pageContext.request.contextPath}/computer" method="post">
         <input type="hidden" name="action" value="update">
-        <input type="hidden" name="id" value="${computer.id.value}">
+        <input type="hidden" name="id" value="${computer.id.value()}">
         <div class="form-grid">
             <div class="form-group">
                 <label for="marca">Marca:</label>
-                <input type="text" id="marca" name="marca" value="${computer.brand.value}" required>
+                <input type="text" id="marca" name="marca" value="${computer.brand.value()}" required>
             </div>
             <div class="form-group">
                 <label for="categoria">Categoría:</label>
                 <select id="categoria" name="categoria" required>
-                    <option value="GAMING" ${computer.category.value == 'GAMING' ? 'selected' : ''}>GAMING</option>
-                    <option value="OFFICE" ${computer.category.value == 'OFFICE' ? 'selected' : ''}>OFFICE</option>
-                    <option value="WORKSTATION" ${computer.category.value == 'WORKSTATION' ? 'selected' : ''}>WORKSTATION</option>
-                    <option value="ULTRABOOK" ${computer.category.value == 'ULTRABOOK' ? 'selected' : ''}>ULTRABOOK</option>
-                    <option value="ALL_IN_ONE" ${computer.category.value == 'ALL_IN_ONE' ? 'selected' : ''}>ALL_IN_ONE</option>
+                    <option value="GAMING" ${computer.category.value().name() == 'GAMING' ? 'selected' : ''}>GAMING</option>
+                    <option value="OFFICE" ${computer.category.value().name() == 'OFFICE' ? 'selected' : ''}>OFFICE</option>
+                    <option value="WORKSTATION" ${computer.category.value().name() == 'WORKSTATION' ? 'selected' : ''}>WORKSTATION</option>
+                    <option value="ULTRABOOK" ${computer.category.value().name() == 'ULTRABOOK' ? 'selected' : ''}>ULTRABOOK</option>
+                    <option value="ALL_IN_ONE" ${computer.category.value().name() == 'ALL_IN_ONE' ? 'selected' : ''}>ALL_IN_ONE</option>
                 </select>
             </div>
             <div class="form-group">
                 <label for="marcaCpu">Marca CPU:</label>
-                <input type="text" id="marcaCpu" name="marcaCpu" value="${computer.processor.cpuBrand}" required>
+                <input type="text" id="marcaCpu" name="marcaCpu" value="${computer.processor.cpuBrand()}" required>
             </div>
             <div class="form-group">
                 <label for="velocidadCpu">Velocidad CPU:</label>
-                <input type="text" id="velocidadCpu" name="velocidadCpu" value="${computer.processor.cpuSpeed}" required>
+                <input type="text" id="velocidadCpu" name="velocidadCpu" value="${computer.processor.cpuSpeed()}" required>
             </div>
             <div class="form-group">
                 <label for="tecnologiaRam">Tecnología RAM:</label>
                 <select id="tecnologiaRam" name="tecnologiaRam" required>
-                    <option value="DDR3" ${computer.memory.ramTechnology == 'DDR3' ? 'selected' : ''}>DDR3</option>
-                    <option value="DDR4" ${computer.memory.ramTechnology == 'DDR4' ? 'selected' : ''}>DDR4</option>
-                    <option value="DDR5" ${computer.memory.ramTechnology == 'DDR5' ? 'selected' : ''}>DDR5</option>
+                    <option value="DDR3" ${computer.memory.ramTechnology().name() == 'DDR3' ? 'selected' : ''}>DDR3</option>
+                    <option value="DDR4" ${computer.memory.ramTechnology().name() == 'DDR4' ? 'selected' : ''}>DDR4</option>
+                    <option value="DDR5" ${computer.memory.ramTechnology().name() == 'DDR5' ? 'selected' : ''}>DDR5</option>
                 </select>
             </div>
             <div class="form-group">
                 <label for="capacidadRam">Capacidad RAM:</label>
-                <input type="text" id="capacidadRam" name="capacidadRam" value="${computer.memory.ramCapacity}" required>
+                <input type="text" id="capacidadRam" name="capacidadRam" value="${computer.memory.ramCapacity()}" required>
             </div>
             <div class="form-group">
                 <label for="tecnologiaDisco">Tecnología Disco:</label>
                 <select id="tecnologiaDisco" name="tecnologiaDisco" required>
-                    <option value="SSD" ${computer.storage.diskTechnology == 'SSD' ? 'selected' : ''}>SSD</option>
-                    <option value="HDD" ${computer.storage.diskTechnology == 'HDD' ? 'selected' : ''}>HDD</option>
-                    <option value="NVME" ${computer.storage.diskTechnology == 'NVME' ? 'selected' : ''}>NVME</option>
+                    <option value="SSD" ${computer.storage.diskTechnology().name() == 'SSD' ? 'selected' : ''}>SSD</option>
+                    <option value="HDD" ${computer.storage.diskTechnology().name() == 'HDD' ? 'selected' : ''}>HDD</option>
+                    <option value="NVME" ${computer.storage.diskTechnology().name() == 'NVME' ? 'selected' : ''}>NVME</option>
                 </select>
             </div>
             <div class="form-group">
                 <label for="capacidadDisco">Capacidad Disco:</label>
-                <input type="text" id="capacidadDisco" name="capacidadDisco" value="${computer.storage.diskCapacity}" required>
+                <input type="text" id="capacidadDisco" name="capacidadDisco" value="${computer.storage.diskCapacity()}" required>
             </div>
             <div class="form-group">
                 <label for="numPuertosUsb">Puertos USB:</label>
-                <input type="number" id="numPuertosUsb" name="numPuertosUsb" value="${computer.ports.usbPorts}" min="0" required>
+                <input type="number" id="numPuertosUsb" name="numPuertosUsb" value="${computer.ports.usbPorts()}" min="0" required>
             </div>
             <div class="form-group">
                 <label for="numPuertosHdmi">Puertos HDMI:</label>
-                <input type="number" id="numPuertosHdmi" name="numPuertosHdmi" value="${computer.ports.hdmiPorts}" min="0" required>
+                <input type="number" id="numPuertosHdmi" name="numPuertosHdmi" value="${computer.ports.hdmiPorts()}" min="0" required>
             </div>
             <div class="form-group">
                 <label for="marcaMonitor">Marca Monitor:</label>
-                <input type="text" id="marcaMonitor" name="marcaMonitor" value="${computer.display.monitorBrand}" required>
+                <input type="text" id="marcaMonitor" name="marcaMonitor" value="${computer.display.monitorBrand()}" required>
             </div>
             <div class="form-group">
                 <label for="pulgadas">Pulgadas:</label>
-                <input type="number" id="pulgadas" name="pulgadas" step="0.01" min="0.01" value="${computer.display.inches}" required>
+                <input type="number" id="pulgadas" name="pulgadas" step="0.01" min="0.01" value="${computer.display.inches()}" required>
             </div>
             <div class="form-group full-width">
                 <label for="precio">Precio:</label>
-                <input type="number" id="precio" name="precio" step="0.01" min="0.01" value="${computer.price.value}" required>
+                <input type="number" id="precio" name="precio" step="0.01" min="0.01" value="${computer.price.value()}" required>
             </div>
         </div>
         <button type="submit" class="btn-primary">Guardar Cambios</button>
