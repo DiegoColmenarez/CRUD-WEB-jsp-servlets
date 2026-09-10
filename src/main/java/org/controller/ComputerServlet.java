@@ -122,4 +122,44 @@ public class ComputerServlet extends HttpServlet {
             dispatcher.forward(request, response);
         }
     }
+
+    private void updateComputer(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+            int id = Integer.parseInt(request.getParameter("id"));
+            String brand = request.getParameter("marca");
+            String category = request.getParameter("categoria");
+            String cpuBrand = request.getParameter("marcaCpu");
+            String cpuSpeed = request.getParameter("velocidadCpu");
+            String ramTechnology = request.getParameter("tecnologiaRam");
+            String ramCapacity = request.getParameter("capacidadRam");
+            String diskTechnology = request.getParameter("tecnologiaDisco");
+            String diskCapacity = request.getParameter("capacidadDisco");
+            String usbPorts = request.getParameter("numPuertosUsb");
+            String hdmiPorts = request.getParameter("numPuertosHdmi");
+            String monitorBrand = request.getParameter("marcaMonitor");
+            String inches = request.getParameter("pulgadas");
+            String price = request.getParameter("precio");
+
+            Computer updatedComputer = Computer.createComputer(
+                    new ComputerId(id),
+                    new ComputerBrand(brand),
+                    new ComputerCategory(Category.fromValue(category)),
+                    new ComputerProcessor(cpuBrand, cpuSpeed),
+                    new ComputerMemory(RamTechnology.valueOf(ramTechnology.toUpperCase()), ramCapacity),
+                    new ComputerStorage(DiskTechnology.valueOf(diskTechnology.toUpperCase()), diskCapacity),
+                    new ComputerPorts(Integer.parseInt(usbPorts), Integer.parseInt(hdmiPorts)),
+                    new ComputerDisplay(monitorBrand, new BigDecimal(inches)),
+                    new ComputerPrice(new BigDecimal(price))
+            );
+            computerRepository.updateComputer(updatedComputer);
+            response.sendRedirect("/menu.jsp");
+        } catch (DomainException e) {
+            request.setAttribute("errorMessage", e.getMessage());
+            showEditForm(request, response);
+        } catch (NumberFormatException e) {
+            request.setAttribute("errorMessage", "Error en el formato de los datos numéricos");
+            showEditForm(request, response);
+        }
+    }
 }
