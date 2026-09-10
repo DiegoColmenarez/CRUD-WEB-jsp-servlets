@@ -27,6 +27,46 @@ public class ComputerServlet extends HttpServlet {
         this.computerRepository = new ComputerRepository();
     }
 
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException {
+        String action = request.getParameter("action");
+        if (action == null) {
+            action = "list";
+        }
+
+        try {
+            switch (action) {
+                case "add":
+                    showAddForm(request, response);
+                    break;
+                case "edit":
+                    showEditForm(request, response);
+                    break;
+                case "delete":
+                    showDeleteConfirmation(request, response);
+                    break;
+                case "list":
+                    listComputers(request, response);
+                    break;
+                case "searchByBrand":
+                    searchComputersByBrand(request, response);
+                    break;
+                case "searchByCategory":
+                    searchComputersByCategory(request, response);
+                    break;
+                case "searchByMaxPrice":
+                    searchComputersByMaxPrice(request, response);
+                    break;
+                default:
+                    response.sendRedirect("/menu.jsp");
+                    break;
+            }
+        } catch (Exception e) {
+            throw new ServletException("Error procesando la petición GET", e);
+        }
+    }
+
     private void showAddForm(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         RequestDispatcher dispatcher = request.getRequestDispatcher("/jsp/computer/add.jsp");
