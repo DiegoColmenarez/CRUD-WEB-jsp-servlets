@@ -19,7 +19,8 @@ public class ComputerRepository {
     public void insertComputer(Computer computer) {
         String sql = "INSERT INTO computers (marca, categoria, marcaCpu, velocidadCpu, tecnologiaRam, " +
                 "capacidadRam, tecnologiaDisco, capacidadDisco, numPuertosUsb, numPuertosHdmi, " +
-                "marcaMonitor, pulgadas, precio) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                "marcaMonitor, pulgadas, precio) VALUES (?, ?::category_enum, ?, ?, ?::ram_technology_enum, " +
+                "?, ?::disk_technology_enum, ?, ?, ?, ?, ?, ?)";
         try (Connection connection = ConnectionFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, computer.getBrand().value());
@@ -56,9 +57,10 @@ public class ComputerRepository {
     }
 
     public void updateComputer(Computer computer) {
-        String sql = "UPDATE computers SET marca = ?, categoria = ?, marcaCpu = ?, velocidadCpu = ?, " +
-                "tecnologiaRam = ?, capacidadRam = ?, tecnologiaDisco = ?, capacidadDisco = ?, " +
-                "numPuertosUsb = ?, numPuertosHdmi = ?, marcaMonitor = ?, pulgadas = ?, precio = ? WHERE id = ?";
+        String sql = "UPDATE computers SET marca = ?, categoria = ?::category_enum, marcaCpu = ?, velocidadCpu = ?, " +
+                "tecnologiaRam = ?::ram_technology_enum, capacidadRam = ?, tecnologiaDisco = ?::disk_technology_enum, " +
+                "capacidadDisco = ?, numPuertosUsb = ?, numPuertosHdmi = ?, marcaMonitor = ?, pulgadas = ?, precio = ? " +
+                "WHERE id = ?";
         try (Connection connection = ConnectionFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, computer.getBrand().value());
@@ -186,7 +188,7 @@ public class ComputerRepository {
                         resultSet.getString("capacidadRam")
                 ),
                 new ComputerStorage(
-                        DiskTechnology.valueOf(resultSet.getString("tecnologiaDisco").toUpperCase()),
+                        DiskTechnology.fromValue(resultSet.getString("tecnologiaDisco")),
                         resultSet.getString("capacidadDisco")
                 ),
                 new ComputerPorts(resultSet.getInt("numPuertosUsb"), resultSet.getInt("numPuertosHdmi")),
