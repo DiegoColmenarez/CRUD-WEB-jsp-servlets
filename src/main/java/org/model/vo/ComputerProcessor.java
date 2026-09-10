@@ -4,6 +4,8 @@ import org.model.exceptions.InvalidProcessorException;
 
 public record ComputerProcessor(String cpuBrand, String cpuSpeed) {
 
+    private static final String SPEED_PATTERN = "^\\d+(\\.\\d+)?\\s*(GHz|MHz)?$";
+
     private static void validateCpuBrandNull(String cpuBrand) {
         if (cpuBrand == null) {
             throw InvalidProcessorException.becauseBrandIsNull();
@@ -29,9 +31,17 @@ public record ComputerProcessor(String cpuBrand, String cpuSpeed) {
     }
 
     private static void validateSpeedFormat(String cpuSpeed) {
-        if (!cpuSpeed.matches("^\\d+(\\.\\d+)?\\s*(GHz|MHz)$")) {
+        if (!cpuSpeed.matches(SPEED_PATTERN)) {
             throw InvalidProcessorException.becauseSpeedFormatIsInvalid();
         }
+    }
+
+    private static String normalizeSpeed(String cpuSpeed) {
+        String trimmed = cpuSpeed.trim().toUpperCase();
+        if (trimmed.matches("^\\d+(\\.\\d+)?$")) {
+            return trimmed + "GHZ";
+        }
+        return trimmed;
     }
 
     public ComputerProcessor {
@@ -39,8 +49,8 @@ public record ComputerProcessor(String cpuBrand, String cpuSpeed) {
         validateCpuBrandEmpty(cpuBrand);
         validateCpuSpeedNull(cpuSpeed);
         validateCpuSpeedEmpty(cpuSpeed);
-        validateSpeedFormat(cpuSpeed.trim());
         cpuBrand = cpuBrand.trim().toUpperCase();
-        cpuSpeed = cpuSpeed.trim().toUpperCase();
+        cpuSpeed = normalizeSpeed(cpuSpeed);
+        validateSpeedFormat(cpuSpeed);
     }
 }
