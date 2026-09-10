@@ -141,7 +141,7 @@ public class ComputerRepository {
     public List<Computer> findByCategory(ComputerCategory category) {
         String sql = "SELECT id, marca, categoria, marcaCpu, velocidadCpu, tecnologiaRam, capacidadRam, " +
                 "tecnologiaDisco, capacidadDisco, numPuertosUsb, numPuertosHdmi, marcaMonitor, pulgadas, precio " +
-                "FROM computers WHERE categoria = ?";
+                "FROM computers WHERE categoria = ?::category_enum";
         List<Computer> computers = new ArrayList<>();
         try (Connection connection = ConnectionFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
