@@ -164,6 +164,15 @@ public class ComputerServlet extends HttpServlet {
         }
     }
 
+    private void searchComputersByBrand(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String brand = request.getParameter("marca");
+        List<Computer> computers = computerRepository.findByBrand(new ComputerBrand(brand));
+        request.setAttribute("computers", computers);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("jsp/computer/list.jsp");
+        dispatcher.forward(request, response);
+    }
+
     private void listComputers(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         List<Computer> computers = computerRepository.listAllComputers();
