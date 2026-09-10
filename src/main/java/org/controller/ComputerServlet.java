@@ -6,9 +6,15 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.model.entity.Computer;
+import org.model.enums.Category;
+import org.model.enums.DiskTechnology;
+import org.model.enums.RamTechnology;
+import org.model.exceptions.DomainException;
 import org.model.repository.ComputerRepository;
-
+import org.model.vo.*;
 import java.io.IOException;
+import java.math.BigDecimal;
 
 @WebServlet(name = "ComputerServlet", value = "/computer")
 public class ComputerServlet extends HttpServlet {
@@ -24,5 +30,43 @@ public class ComputerServlet extends HttpServlet {
             throws ServletException, IOException {
         RequestDispatcher dispatcher = request.getRequestDispatcher("/jsp/computer/add.jsp");
         dispatcher.forward(request, response);
+    }
+
+    private void insertComputer(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+            String brand = request.getParameter("marca");
+            String category = request.getParameter("categoria");
+            String cpuBrand = request.getParameter("marcaCpu");
+            String cpuSpeed = request.getParameter("velocidadCpu");
+            String ramTechnology = request.getParameter("tecnologiaRam");
+            String ramCapacity = request.getParameter("capacidadRam");
+            String diskTechnology = request.getParameter("tecnologiaDisco");
+            String diskCapacity = request.getParameter("capacidadDisco");
+            String usbPorts = request.getParameter("numPuertosUsb");
+            String hdmiPorts = request.getParameter("numPuertosHdmi");
+            String monitorBrand = request.getParameter("marcaMonitor");
+            String inches = request.getParameter("pulgadas");
+            String price = request.getParameter("precio");
+
+            Computer newComputer = Computer.createComputerWithoutId(
+                    new ComputerBrand(brand),
+                    new ComputerCategory(Category.fromValue(category)),
+                    new ComputerProcessor(cpuBrand, cpuSpeed),
+                    new ComputerMemory(RamTechnology.valueOf(ramTechnology.toUpperCase()), ramCapacity),
+                    new ComputerStorage(DiskTechnology.valueOf(diskTechnology.toUpperCase()), diskCapacity),
+                    new ComputerPorts(Integer.parseInt(usbPorts), Integer.parseInt(hdmiPorts)),
+                    new ComputerDisplay(monitorBrand, new BigDecimal(inches)),
+                    new ComputerPrice(new BigDecimal(price))
+            );
+            computerRepository.insertComputer(newComputer);
+            response.sendRedirect("/menu.jsp");
+        } catch (DomainException e) {
+            request.setAttribute("errorMessage", e.getMessage());
+            showAddForm(request, response);
+        } catch (NumberFormatException e) {
+            request.setAttribute("errorMessage", "Error en el formato de los datos numéricos");
+            showAddForm(request, response);
+        }
     }
 }
