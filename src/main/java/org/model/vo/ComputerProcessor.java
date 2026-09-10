@@ -4,7 +4,7 @@ import org.model.exceptions.InvalidProcessorException;
 
 public record ComputerProcessor(String cpuBrand, String cpuSpeed) {
 
-    private static final String SPEED_PATTERN = "^\\d+(\\.\\d+)?\\s*(GHz|MHz)?$";
+    private static final String SPEED_PATTERN = "(?i)^\\d+(\\.\\d+)?\\s*(GHz|MHz)?$";
 
     private static void validateCpuBrandNull(String cpuBrand) {
         if (cpuBrand == null) {
