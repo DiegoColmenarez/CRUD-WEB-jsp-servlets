@@ -103,4 +103,23 @@ public class ComputerServlet extends HttpServlet {
             response.sendRedirect("/menu.jsp");
         }
     }
+
+    private void showEditForm(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        RequestDispatcher dispatcher = null;
+        try {
+            int id = Integer.parseInt(request.getParameter("id"));
+            ComputerId computerId = new ComputerId(id);
+            Computer computer = computerRepository.findById(computerId);
+            request.setAttribute("computer", computer);
+            dispatcher = request.getRequestDispatcher("jsp/computer/modify.jsp");
+            dispatcher.forward(request, response);
+        } catch (NumberFormatException e) {
+            response.sendRedirect("/menu.jsp");
+        } catch (DomainException e) {
+            request.setAttribute("errorMessage", e.getMessage());
+            dispatcher = request.getRequestDispatcher("jsp/computer/searchModify.jsp");
+            dispatcher.forward(request, response);
+        }
+    }
 }
