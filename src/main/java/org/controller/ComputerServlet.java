@@ -69,6 +69,7 @@ public class ComputerServlet extends HttpServlet {
             showAddForm(request, response);
         }
     }
+
     private void showDeleteConfirmation(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         RequestDispatcher dispatcher = null;
@@ -85,6 +86,21 @@ public class ComputerServlet extends HttpServlet {
             request.setAttribute("errorMessage", e.getMessage());
             dispatcher = request.getRequestDispatcher("jsp/computer/searchDelete.jsp");
             dispatcher.forward(request, response);
+        }
+    }
+
+    private void deleteComputer(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+            int id = Integer.parseInt(request.getParameter("id"));
+            ComputerId computerId = new ComputerId(id);
+            computerRepository.deleteComputer(computerId);
+            response.sendRedirect("/menu.jsp");
+        } catch (DomainException e) {
+            request.setAttribute("errorMessage", e.getMessage());
+            showDeleteConfirmation(request, response);
+        } catch (NumberFormatException e) {
+            response.sendRedirect("/menu.jsp");
         }
     }
 }
