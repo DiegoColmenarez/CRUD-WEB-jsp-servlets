@@ -183,6 +183,25 @@ public class ComputerServlet extends HttpServlet {
         dispatcher.forward(request, response);
     }
 
+    private void searchComputersByMaxPrice(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+            String maxPrice = request.getParameter("precio");
+            List<Computer> computers = computerRepository.findByMaxPrice(new ComputerPrice(new BigDecimal(maxPrice)));
+            request.setAttribute("computers", computers);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("jsp/computer/list.jsp");
+            dispatcher.forward(request, response);
+        } catch (NumberFormatException e) {
+            request.setAttribute("errorMessage", "El precio debe ser un valor numérico válido");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("jsp/computer/searchByMaxPrice.jsp");
+            dispatcher.forward(request, response);
+        } catch (DomainException e) {
+            request.setAttribute("errorMessage", e.getMessage());
+            RequestDispatcher dispatcher = request.getRequestDispatcher("jsp/computer/searchByMaxPrice.jsp");
+            dispatcher.forward(request, response);
+        }
+    }
+
     private void listComputers(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         List<Computer> computers = computerRepository.listAllComputers();
