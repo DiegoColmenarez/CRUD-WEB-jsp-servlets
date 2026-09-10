@@ -122,7 +122,7 @@ public class ComputerRepository {
     public List<Computer> findByBrand(ComputerBrand brand) {
         String sql = "SELECT id, marca, categoria, marcaCpu, velocidadCpu, tecnologiaRam, capacidadRam, " +
                 "tecnologiaDisco, capacidadDisco, numPuertosUsb, numPuertosHdmi, marcaMonitor, pulgadas, precio " +
-                "FROM computers WHERE marca = ?";
+                "FROM computers WHERE marca ILIKE ?";
         List<Computer> computers = new ArrayList<>();
         try (Connection connection = ConnectionFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -175,88 +175,6 @@ public class ComputerRepository {
         }
         return computers;
     }
-
-    public List<Computer> findByBrandAndCategory(ComputerBrand brand, ComputerCategory category) {
-        String sql = "SELECT id, marca, categoria, marcaCpu, velocidadCpu, tecnologiaRam, capacidadRam, " +
-                "tecnologiaDisco, capacidadDisco, numPuertosUsb, numPuertosHdmi, marcaMonitor, pulgadas, precio " +
-                "FROM computers WHERE marca = ? AND categoria = ?";
-        List<Computer> computers = new ArrayList<>();
-        try (Connection connection = ConnectionFactory.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, brand.value());
-            statement.setString(2, category.value().getValue());
-            try (ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()) {
-                    computers.add(mapResultSetToComputer(resultSet));
-                }
-            }
-        } catch (SQLException e) {
-            throw RepositoryException.repositoryGeneralException(e);
-        }
-        return computers;
-    }
-
-    public List<Computer> findByBrandAndMaxPrice(ComputerBrand brand, ComputerPrice maxPrice) {
-        String sql = "SELECT id, marca, categoria, marcaCpu, velocidadCpu, tecnologiaRam, capacidadRam, " +
-                "tecnologiaDisco, capacidadDisco, numPuertosUsb, numPuertosHdmi, marcaMonitor, pulgadas, precio " +
-                "FROM computers WHERE marca = ? AND precio <= ?";
-        List<Computer> computers = new ArrayList<>();
-        try (Connection connection = ConnectionFactory.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, brand.value());
-            statement.setBigDecimal(2, maxPrice.value());
-            try (ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()) {
-                    computers.add(mapResultSetToComputer(resultSet));
-                }
-            }
-        } catch (SQLException e) {
-            throw RepositoryException.repositoryGeneralException(e);
-        }
-        return computers;
-    }
-
-    public List<Computer> findByCategoryAndMaxPrice(ComputerCategory category, ComputerPrice maxPrice) {
-        String sql = "SELECT id, marca, categoria, marcaCpu, velocidadCpu, tecnologiaRam, capacidadRam, " +
-                "tecnologiaDisco, capacidadDisco, numPuertosUsb, numPuertosHdmi, marcaMonitor, pulgadas, precio " +
-                "FROM computers WHERE categoria = ? AND precio <= ?";
-        List<Computer> computers = new ArrayList<>();
-        try (Connection connection = ConnectionFactory.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, category.value().getValue());
-            statement.setBigDecimal(2, maxPrice.value());
-            try (ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()) {
-                    computers.add(mapResultSetToComputer(resultSet));
-                }
-            }
-        } catch (SQLException e) {
-            throw RepositoryException.repositoryGeneralException(e);
-        }
-        return computers;
-    }
-
-    public List<Computer> findByBrandCategoryAndMaxPrice(ComputerBrand brand, ComputerCategory category, ComputerPrice maxPrice) {
-        String sql = "SELECT id, marca, categoria, marcaCpu, velocidadCpu, tecnologiaRam, capacidadRam, " +
-                "tecnologiaDisco, capacidadDisco, numPuertosUsb, numPuertosHdmi, marcaMonitor, pulgadas, precio " +
-                "FROM computers WHERE marca = ? AND categoria = ? AND precio <= ?";
-        List<Computer> computers = new ArrayList<>();
-        try (Connection connection = ConnectionFactory.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, brand.value());
-            statement.setString(2, category.value().getValue());
-            statement.setBigDecimal(3, maxPrice.value());
-            try (ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()) {
-                    computers.add(mapResultSetToComputer(resultSet));
-                }
-            }
-        } catch (SQLException e) {
-            throw RepositoryException.repositoryGeneralException(e);
-        }
-        return computers;
-    }
-
     private Computer mapResultSetToComputer(ResultSet resultSet) throws SQLException {
         return Computer.createComputer(
                 new ComputerId(resultSet.getInt("id")),
