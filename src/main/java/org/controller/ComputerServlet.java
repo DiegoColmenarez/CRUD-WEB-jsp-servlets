@@ -173,6 +173,16 @@ public class ComputerServlet extends HttpServlet {
         dispatcher.forward(request, response);
     }
 
+    private void searchComputersByCategory(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String category = request.getParameter("categoria");
+        List<Computer> computers = computerRepository.findByCategory(
+                new ComputerCategory(Category.fromValue(category)));
+        request.setAttribute("computers", computers);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("jsp/computer/list.jsp");
+        dispatcher.forward(request, response);
+    }
+
     private void listComputers(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         List<Computer> computers = computerRepository.listAllComputers();
