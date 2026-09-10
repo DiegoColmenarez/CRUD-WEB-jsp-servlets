@@ -67,6 +67,31 @@ public class ComputerServlet extends HttpServlet {
         }
     }
 
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException {
+        String action = request.getParameter("action");
+
+        try {
+            switch (action) {
+                case "insert":
+                    insertComputer(request, response);
+                    break;
+                case "update":
+                    updateComputer(request, response);
+                    break;
+                case "delete":
+                    deleteComputer(request, response);
+                    break;
+                default:
+                    response.sendRedirect(request.getContextPath() + "/menu.jsp?mensaje=OperacionRealizadaConExito");
+                    break;
+            }
+        } catch (Exception e) {
+            throw new ServletException("Error procesando la petición POST", e);
+        }
+    }
+
     private void showAddForm(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         RequestDispatcher dispatcher = request.getRequestDispatcher("/jsp/computer/add.jsp");
