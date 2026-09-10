@@ -1,0 +1,277 @@
+package org.controller;
+
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.model.entity.Computer;
+import org.model.enums.Category;
+import org.model.enums.DiskTechnology;
+import org.model.enums.RamTechnology;
+import org.model.exceptions.DomainException;
+import org.model.repository.ComputerRepository;
+import org.model.vo.*;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.List;
+
+@WebServlet(name = "ComputerServlet", value = "/computer")
+public class ComputerServlet extends HttpServlet {
+    private ComputerRepository computerRepository;
+
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        this.computerRepository = new ComputerRepository();
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException {
+        String action = request.getParameter("action");
+        if (action == null) {
+            action = "list";
+        }
+
+        try {
+            switch (action) {
+                case "add":
+                    showAddForm(request, response);
+                    break;
+                case "edit":
+                    showEditForm(request, response);
+                    break;
+                case "delete":
+                    showDeleteConfirmation(request, response);
+                    break;
+                case "list":
+                    listComputers(request, response);
+                    break;
+                case "searchByBrand":
+                    searchComputersByBrand(request, response);
+                    break;
+                case "searchByCategory":
+                    searchComputersByCategory(request, response);
+                    break;
+                case "searchByMaxPrice":
+                    searchComputersByMaxPrice(request, response);
+                    break;
+                default:
+                    response.sendRedirect("/menu.jsp");
+                    break;
+            }
+        } catch (Exception e) {
+            throw new ServletException("Error procesando la petición GET", e);
+        }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException {
+        String action = request.getParameter("action");
+
+        try {
+            switch (action) {
+                case "insert":
+                    insertComputer(request, response);
+                    break;
+                case "update":
+                    updateComputer(request, response);
+                    break;
+                case "delete":
+                    deleteComputer(request, response);
+                    break;
+                default:
+                    response.sendRedirect(request.getContextPath() + "/menu.jsp?mensaje=OperacionRealizadaConExito");
+                    break;
+            }
+        } catch (Exception e) {
+            throw new ServletException("Error procesando la petición POST", e);
+        }
+    }
+
+    private void showAddForm(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/jsp/computer/add.jsp");
+        dispatcher.forward(request, response);
+    }
+
+    private void insertComputer(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+            String brand = request.getParameter("marca");
+            String category = request.getParameter("categoria");
+            String cpuBrand = request.getParameter("marcaCpu");
+            String cpuSpeed = request.getParameter("velocidadCpu");
+            String ramTechnology = request.getParameter("tecnologiaRam");
+            String ramCapacity = request.getParameter("capacidadRam");
+            String diskTechnology = request.getParameter("tecnologiaDisco");
+            String diskCapacity = request.getParameter("capacidadDisco");
+            String usbPorts = request.getParameter("numPuertosUsb");
+            String hdmiPorts = request.getParameter("numPuertosHdmi");
+            String monitorBrand = request.getParameter("marcaMonitor");
+            String inches = request.getParameter("pulgadas");
+            String price = request.getParameter("precio");
+
+            Computer newComputer = Computer.createComputerWithoutId(
+                    new ComputerBrand(brand),
+                    new ComputerCategory(Category.fromValue(category)),
+                    new ComputerProcessor(cpuBrand, cpuSpeed),
+                    new ComputerMemory(RamTechnology.valueOf(ramTechnology.toUpperCase()), ramCapacity),
+                    new ComputerStorage(DiskTechnology.valueOf(diskTechnology.toUpperCase()), diskCapacity),
+                    new ComputerPorts(Integer.parseInt(usbPorts), Integer.parseInt(hdmiPorts)),
+                    new ComputerDisplay(monitorBrand, new BigDecimal(inches)),
+                    new ComputerPrice(new BigDecimal(price))
+            );
+            computerRepository.insertComputer(newComputer);
+            response.sendRedirect("/menu.jsp");
+        } catch (DomainException e) {
+            request.setAttribute("errorMessage", e.getMessage());
+            showAddForm(request, response);
+        } catch (NumberFormatException e) {
+            request.setAttribute("errorMessage", "Error en el formato de los datos numéricos");
+            showAddForm(request, response);
+        }
+    }
+
+    private void showDeleteConfirmation(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        RequestDispatcher dispatcher = null;
+        try {
+            int id = Integer.parseInt(request.getParameter("id"));
+            ComputerId computerId = new ComputerId(id);
+            Computer computer = computerRepository.findById(computerId);
+            request.setAttribute("computer", computer);
+            dispatcher = request.getRequestDispatcher("jsp/computer/remove.jsp");
+            dispatcher.forward(request, response);
+        } catch (NumberFormatException e) {
+            response.sendRedirect("/menu.jsp");
+        } catch (DomainException e) {
+            request.setAttribute("errorMessage", e.getMessage());
+            dispatcher = request.getRequestDispatcher("jsp/computer/searchDelete.jsp");
+            dispatcher.forward(request, response);
+        }
+    }
+
+    private void deleteComputer(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+            int id = Integer.parseInt(request.getParameter("id"));
+            ComputerId computerId = new ComputerId(id);
+            computerRepository.deleteComputer(computerId);
+            response.sendRedirect("/menu.jsp");
+        } catch (DomainException e) {
+            request.setAttribute("errorMessage", e.getMessage());
+            showDeleteConfirmation(request, response);
+        } catch (NumberFormatException e) {
+            response.sendRedirect("/menu.jsp");
+        }
+    }
+
+    private void showEditForm(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        RequestDispatcher dispatcher = null;
+        try {
+            int id = Integer.parseInt(request.getParameter("id"));
+            ComputerId computerId = new ComputerId(id);
+            Computer computer = computerRepository.findById(computerId);
+            request.setAttribute("computer", computer);
+            dispatcher = request.getRequestDispatcher("jsp/computer/modify.jsp");
+            dispatcher.forward(request, response);
+        } catch (NumberFormatException e) {
+            response.sendRedirect("/menu.jsp");
+        } catch (DomainException e) {
+            request.setAttribute("errorMessage", e.getMessage());
+            dispatcher = request.getRequestDispatcher("jsp/computer/searchModify.jsp");
+            dispatcher.forward(request, response);
+        }
+    }
+
+    private void updateComputer(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+            int id = Integer.parseInt(request.getParameter("id"));
+            String brand = request.getParameter("marca");
+            String category = request.getParameter("categoria");
+            String cpuBrand = request.getParameter("marcaCpu");
+            String cpuSpeed = request.getParameter("velocidadCpu");
+            String ramTechnology = request.getParameter("tecnologiaRam");
+            String ramCapacity = request.getParameter("capacidadRam");
+            String diskTechnology = request.getParameter("tecnologiaDisco");
+            String diskCapacity = request.getParameter("capacidadDisco");
+            String usbPorts = request.getParameter("numPuertosUsb");
+            String hdmiPorts = request.getParameter("numPuertosHdmi");
+            String monitorBrand = request.getParameter("marcaMonitor");
+            String inches = request.getParameter("pulgadas");
+            String price = request.getParameter("precio");
+
+            Computer updatedComputer = Computer.createComputer(
+                    new ComputerId(id),
+                    new ComputerBrand(brand),
+                    new ComputerCategory(Category.fromValue(category)),
+                    new ComputerProcessor(cpuBrand, cpuSpeed),
+                    new ComputerMemory(RamTechnology.valueOf(ramTechnology.toUpperCase()), ramCapacity),
+                    new ComputerStorage(DiskTechnology.valueOf(diskTechnology.toUpperCase()), diskCapacity),
+                    new ComputerPorts(Integer.parseInt(usbPorts), Integer.parseInt(hdmiPorts)),
+                    new ComputerDisplay(monitorBrand, new BigDecimal(inches)),
+                    new ComputerPrice(new BigDecimal(price))
+            );
+            computerRepository.updateComputer(updatedComputer);
+            response.sendRedirect("/menu.jsp");
+        } catch (DomainException e) {
+            request.setAttribute("errorMessage", e.getMessage());
+            showEditForm(request, response);
+        } catch (NumberFormatException e) {
+            request.setAttribute("errorMessage", "Error en el formato de los datos numéricos");
+            showEditForm(request, response);
+        }
+    }
+
+    private void searchComputersByBrand(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String brand = request.getParameter("marca");
+        List<Computer> computers = computerRepository.findByBrand(new ComputerBrand(brand));
+        request.setAttribute("computers", computers);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("jsp/computer/list.jsp");
+        dispatcher.forward(request, response);
+    }
+
+    private void searchComputersByCategory(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String category = request.getParameter("categoria");
+        List<Computer> computers = computerRepository.findByCategory(
+                new ComputerCategory(Category.fromValue(category)));
+        request.setAttribute("computers", computers);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("jsp/computer/list.jsp");
+        dispatcher.forward(request, response);
+    }
+
+    private void searchComputersByMaxPrice(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+            String maxPrice = request.getParameter("precio");
+            List<Computer> computers = computerRepository.findByMaxPrice(new ComputerPrice(new BigDecimal(maxPrice)));
+            request.setAttribute("computers", computers);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("jsp/computer/list.jsp");
+            dispatcher.forward(request, response);
+        } catch (NumberFormatException e) {
+            request.setAttribute("errorMessage", "El precio debe ser un valor numérico válido");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("jsp/computer/searchByMaxPrice.jsp");
+            dispatcher.forward(request, response);
+        } catch (DomainException e) {
+            request.setAttribute("errorMessage", e.getMessage());
+            RequestDispatcher dispatcher = request.getRequestDispatcher("jsp/computer/searchByMaxPrice.jsp");
+            dispatcher.forward(request, response);
+        }
+    }
+
+    private void listComputers(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        List<Computer> computers = computerRepository.listAllComputers();
+        request.setAttribute("computers", computers);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("jsp/computer/list.jsp");
+        dispatcher.forward(request, response);
+    }
+}
