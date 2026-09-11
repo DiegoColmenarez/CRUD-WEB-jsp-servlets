@@ -37,6 +37,59 @@ public class PasswordResetServlet extends HttpServlet {
         this.emailService = new EmailService();
     }
 
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException {
+        String action = request.getParameter("action");
+        if (action == null) {
+            action = "showEmailForm";
+        }
+
+        try {
+            switch (action) {
+                case "showEmailForm":
+                    showEmailForm(request, response);
+                    break;
+                case "showCodeForm":
+                    showCodeForm(request, response);
+                    break;
+                case "showPasswordForm":
+                    showPasswordForm(request, response);
+                    break;
+                default:
+                    response.sendRedirect("/menu.jsp");
+                    break;
+            }
+        } catch (Exception e) {
+            throw new ServletException("Error procesando la petición GET", e);
+        }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException {
+        String action = request.getParameter("action");
+
+        try {
+            switch (action) {
+                case "sendCode":
+                    sendCode(request, response);
+                    break;
+                case "verifyCode":
+                    verifyCode(request, response);
+                    break;
+                case "updatePassword":
+                    updatePassword(request, response);
+                    break;
+                default:
+                    response.sendRedirect(request.getContextPath() + "/menu.jsp");
+                    break;
+            }
+        } catch (Exception e) {
+            throw new ServletException("Error procesando la petición POST", e);
+        }
+    }
+
     private void showEmailForm(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         RequestDispatcher dispatcher = request.getRequestDispatcher("/jsp/password-reset/enterEmail.jsp");
