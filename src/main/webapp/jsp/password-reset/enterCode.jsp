@@ -1,5 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:if test="${empty sessionScope.resetEmail}">
+    <c:redirect url="/password-reset?action=showEmailForm"/>
+</c:if>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -18,7 +21,12 @@
             max-width: 400px; width: 100%;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
         }
-        h2 { color: #333; text-align: center; margin-bottom: 30px; }
+        h2 { color: #333; text-align: center; margin-bottom: 20px; }
+        .info {
+            text-align: center; color: #666; margin-bottom: 25px;
+            font-size: 14px;
+        }
+        .info strong { color: #667eea; }
         .form-group { margin-bottom: 20px; }
         label { display: block; margin-bottom: 5px; color: #555; font-weight: 500; }
         input {
@@ -55,6 +63,10 @@
     <c:if test="${not empty successMessage}">
         <div class="success-message">${successMessage}</div>
     </c:if>
+
+    <p class="info">
+        Código enviado a <strong>${sessionScope.resetEmail}</strong>
+    </p>
 
     <form action="${pageContext.request.contextPath}/password-reset" method="post">
         <input type="hidden" name="action" value="verifyCode">
