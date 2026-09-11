@@ -4,6 +4,11 @@ import org.model.exceptions.InvalidProcessorException;
 
 public record ComputerProcessor(String cpuBrand, String cpuSpeed) {
 
+    private static final String SPEED_PATTERN = "(?i)^\\d+(\\.\\d+)?\\s*(GHz|MHz)?$";
+
+    private static final double MIN_SPEED_GHZ = 0.1;
+    private static final double MAX_SPEED_GHZ = 10.0;
+
     private static void validateCpuBrandNull(String cpuBrand) {
         if (cpuBrand == null) {
             throw InvalidProcessorException.becauseBrandIsNull();
@@ -29,9 +34,37 @@ public record ComputerProcessor(String cpuBrand, String cpuSpeed) {
     }
 
     private static void validateSpeedFormat(String cpuSpeed) {
-        if (!cpuSpeed.matches("^\\d+(\\.\\d+)?\\s*(GHz|MHz)$")) {
+        if (!cpuSpeed.matches(SPEED_PATTERN)) {
             throw InvalidProcessorException.becauseSpeedFormatIsInvalid();
         }
+    }
+
+    private static void validateSpeedRange(String cpuSpeed) {
+        double speedInGhz = toGhz(cpuSpeed);
+        if (speedInGhz < MIN_SPEED_GHZ || speedInGhz > MAX_SPEED_GHZ) {
+            throw InvalidProcessorException.becauseSpeedOutOfRange();
+        }
+    }
+
+    private static double toGhz(String cpuSpeed) {
+        String normalized = cpuSpeed.trim().toUpperCase();
+        if (normalized.endsWith("MHZ")) {
+            String number = normalized.replace("MHZ", "").trim();
+            return Double.parseDouble(number) / 1000.0;
+        }
+        if (normalized.endsWith("GHZ")) {
+            String number = normalized.replace("GHZ", "").trim();
+            return Double.parseDouble(number);
+        }
+        return Double.parseDouble(normalized);
+    }
+
+    private static String normalizeSpeed(String cpuSpeed) {
+        String trimmed = cpuSpeed.trim().toUpperCase();
+        if (trimmed.matches("^\\d+(\\.\\d+)?$")) {
+            return trimmed + "GHZ";
+        }
+        return trimmed;
     }
 
     public ComputerProcessor {
@@ -40,7 +73,8 @@ public record ComputerProcessor(String cpuBrand, String cpuSpeed) {
         validateCpuSpeedNull(cpuSpeed);
         validateCpuSpeedEmpty(cpuSpeed);
         validateSpeedFormat(cpuSpeed.trim());
+        validateSpeedRange(cpuSpeed.trim());
         cpuBrand = cpuBrand.trim().toUpperCase();
-        cpuSpeed = cpuSpeed.trim().toUpperCase();
+        cpuSpeed = normalizeSpeed(cpuSpeed);
     }
 }

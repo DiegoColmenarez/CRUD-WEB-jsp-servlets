@@ -2,7 +2,7 @@ package org.model.enums;
 
 public enum DiskTechnology {
     HDD,
-    SDD,
+    SSD,
     NVME;
 
     public static boolean isValidValue(final String value) {
@@ -12,5 +12,14 @@ public enum DiskTechnology {
             }
         }
         return false;
+    }
+
+    public static DiskTechnology fromValue(final String value) {
+        for (final DiskTechnology technology : values()) {
+            if (technology.name().equalsIgnoreCase(value)) {
+                return technology;
+            }
+        }
+        throw new IllegalArgumentException("Invalid DiskTechnology: " + value);
     }
 }

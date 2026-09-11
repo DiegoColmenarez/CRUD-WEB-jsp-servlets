@@ -213,7 +213,7 @@ public class ComputerServlet extends HttpServlet {
                     new ComputerCategory(Category.fromValue(category)),
                     new ComputerProcessor(cpuBrand, cpuSpeed),
                     new ComputerMemory(RamTechnology.valueOf(ramTechnology.toUpperCase()), ramCapacity),
-                    new ComputerStorage(DiskTechnology.valueOf(diskTechnology.toUpperCase()), diskCapacity),
+                    new ComputerStorage(DiskTechnology.fromValue(diskTechnology), diskCapacity),
                     new ComputerPorts(Integer.parseInt(usbPorts), Integer.parseInt(hdmiPorts)),
                     new ComputerDisplay(monitorBrand, new BigDecimal(inches)),
                     new ComputerPrice(new BigDecimal(price))

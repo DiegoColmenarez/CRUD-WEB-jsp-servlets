@@ -9,7 +9,8 @@ public class InvalidProcessorException extends DomainException {
     private static final String MESSAGE_BRAND_EMPTY = "Processor brand is invalid, it cannot be empty";
     private static final String MESSAGE_SPEED_NULL = "Processor speed is invalid. Speed is Null";
     private static final String MESSAGE_SPEED_EMPTY = "Processor speed is invalid, it cannot be empty";
-    private static final String MESSAGE_SPEED_FORMAT_INVALID = "Processor speed format is invalid, expected format: 3.5GHz";
+    private static final String MESSAGE_SPEED_FORMAT_INVALID = "Processor speed format is invalid, expected format: 3.5GHz or 3500MHz";
+    private static final String MESSAGE_SPEED_OUT_OF_RANGE = "Processor speed is out of range, must be between 0.1GHz and 10GHz";
 
     public static InvalidProcessorException becauseBrandIsNull() {
         return new InvalidProcessorException(MESSAGE_BRAND_NULL);
@@ -29,5 +30,9 @@ public class InvalidProcessorException extends DomainException {
 
     public static InvalidProcessorException becauseSpeedFormatIsInvalid() {
         return new InvalidProcessorException(MESSAGE_SPEED_FORMAT_INVALID);
+    }
+
+    public static InvalidProcessorException becauseSpeedOutOfRange() {
+        return new InvalidProcessorException(MESSAGE_SPEED_OUT_OF_RANGE);
     }
 }
