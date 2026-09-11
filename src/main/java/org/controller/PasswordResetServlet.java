@@ -41,4 +41,10 @@ public class PasswordResetServlet extends HttpServlet {
         RequestDispatcher dispatcher = request.getRequestDispatcher("/jsp/password-reset/enterCode.jsp");
         dispatcher.forward(request, response);
     }
+
+    private void showPasswordForm(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/jsp/password-reset/newPassword.jsp");
+        dispatcher.forward(request, response);
+    }
 }
