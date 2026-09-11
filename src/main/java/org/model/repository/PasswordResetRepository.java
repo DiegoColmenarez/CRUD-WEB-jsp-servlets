@@ -40,4 +40,16 @@ public class PasswordResetRepository {
             throw RepositoryException.repositoryGeneralException(e);
         }
     }
+
+    public void markCodeAsUsed(PasswordResetCode code) {
+        String sql = "UPDATE password_reset_tokens SET used = TRUE WHERE code = ?";
+        try (Connection connection = ConnectionFactory.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, code.value());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw RepositoryException.repositoryGeneralException(e);
+        }
+    }
+}
 }
