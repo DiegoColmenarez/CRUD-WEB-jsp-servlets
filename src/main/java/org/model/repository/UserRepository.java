@@ -191,4 +191,19 @@ public class UserRepository {
             throw RepositoryException.repositoryGeneralException(e);
         }
     }
+
+    public void updatePassword(UserId id, UserPassword newPassword) {
+        String sql = "UPDATE users SET password = ? WHERE id = ?";
+        try (Connection connection = ConnectionFactory.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, newPassword.value());
+            statement.setInt(2, id.value());
+            int rows = statement.executeUpdate();
+            if (rows == 0) {
+                throw UserNotFoundException.becauseIdDoesExist(id);
+            }
+        } catch (SQLException e) {
+            throw RepositoryException.repositoryGeneralException(e);
+        }
+    }
 }
