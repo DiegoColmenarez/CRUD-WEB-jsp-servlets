@@ -78,4 +78,23 @@ public class PasswordResetServlet extends HttpServlet {
         }
     }
 
+    private void verifyCode(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+            PasswordResetCode code = new PasswordResetCode(request.getParameter("code"));
+            Optional<Integer> userId = passwordResetRepository.findUserIdByValidCode(code);
+
+            if (userId.isEmpty()) {
+                request.setAttribute("errorMessage", "Invalid or expired code");
+                showCodeForm(request, response);
+                return;
+            }
+
+            request.getSession().setAttribute("resetCode", code.value());
+            showPasswordForm(request, response);
+        } catch (DomainException e) {
+            request.setAttribute("errorMessage", e.getMessage());
+            showCodeForm(request, response);
+        }
+    }
 }
