@@ -14,6 +14,7 @@ import org.model.service.PasswordResetCodeGenerator;
 import org.model.vo.PasswordResetCode;
 import org.model.vo.UserEmail;
 import org.model.vo.UserId;
+import org.model.vo.UserPassword;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -97,4 +98,43 @@ public class PasswordResetServlet extends HttpServlet {
             showCodeForm(request, response);
         }
     }
+
+    private void updatePassword(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+            String codeValue = (String) request.getSession().getAttribute("resetCode");
+            if (codeValue == null) {
+                showEmailForm(request, response);
+                return;
+            }
+
+            PasswordResetCode code = new PasswordResetCode(codeValue);
+            Optional<Integer> userId = passwordResetRepository.findUserIdByValidCode(code);
+            if (userId.isEmpty()) {
+                request.setAttribute("errorMessage", "Session expired, please start again");
+                showEmailForm(request, response);
+                return;
+            }
+
+            UserPassword newPassword = new UserPassword(request.getParameter("password"));
+            UserPassword confirmPassword = new UserPassword(request.getParameter("confirmPassword"));
+
+            if (!newPassword.value().equals(confirmPassword.value())) {
+                request.setAttribute("errorMessage", "Passwords do not match");
+                showPasswordForm(request, response);
+                return;
+            }
+
+            userRepository.updatePassword(new UserId(userId.get()), newPassword);
+            passwordResetRepository.markCodeAsUsed(code);
+            request.getSession().removeAttribute("resetCode");
+            request.getSession().removeAttribute("resetEmail");
+
+            response.sendRedirect(request.getContextPath() + "/jsp/auth/login.jsp");
+        } catch (DomainException e) {
+            request.setAttribute("errorMessage", e.getMessage());
+            showPasswordForm(request, response);
+        }
+    }
+}
 }
