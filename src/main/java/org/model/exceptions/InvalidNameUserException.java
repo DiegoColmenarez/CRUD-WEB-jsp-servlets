@@ -12,7 +12,7 @@ public class InvalidNameUserException extends DomainException{
         return new InvalidNameUserException(MESSAGE_INVALID);
     }
 
-    public InvalidNameUserException becauseIsEmpty(){
+    public static InvalidNameUserException becauseIsEmpty(){
         return new InvalidNameUserException(MESSAGE_INVALID_EMPTY);
     }
 }
