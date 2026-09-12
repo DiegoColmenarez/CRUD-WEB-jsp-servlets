@@ -11,13 +11,13 @@ public class PropertiesLoaderSmtp {
     static {
         try (InputStream input = PropertiesLoaderSmtp.class
                 .getClassLoader()
-                .getResourceAsStream("application.properties")) {
+                .getResourceAsStream("config.properties")) {
             if (input == null) {
-                throw new IllegalStateException("application.properties not found in classpath");
+                throw new IllegalStateException("config.properties not found in classpath");
             }
             PROPERTIES.load(input);
         } catch (IOException e) {
-            throw new IllegalStateException("Error loading application.properties", e);
+            throw new IllegalStateException("Error loading config.properties", e);
         }
     }
 
