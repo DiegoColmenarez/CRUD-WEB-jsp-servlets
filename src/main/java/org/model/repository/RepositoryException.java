@@ -1,6 +1,8 @@
 package org.model.repository;
 
-public class RepositoryException extends RuntimeException {
+import org.model.exceptions.DomainException;
+
+public class RepositoryException extends DomainException {
     public RepositoryException(String message) {
         super(message);
     }
