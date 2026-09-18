@@ -124,6 +124,10 @@
         <button type="submit" class="btn-primary">Iniciar Sesión</button>
     </form>
     <a href="${pageContext.request.contextPath}/auth?action=register" class="link">¿No tienes cuenta? Regístrate</a>
+    <a href="${pageContext.request.contextPath}/password-reset"
+       style="display:block; text-align:center; margin-top:15px; color:#667eea; text-decoration:none; font-size:14px;">
+        ¿Olvidaste tu contraseña?
+    </a>
 </div>
 </body>
 </html>

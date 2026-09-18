@@ -16,6 +16,12 @@ public record UserName(String value) {
         }
     }
 
+    private static void validateNameNotEmpty(String value) {
+        if (value.isEmpty()) {
+            throw InvalidNameUserException.becauseIsEmpty();
+        }
+    }
+
     public UserName{
         final String normalizedValue = Objects.requireNonNull(value, "UserName cannot be null")
                 .trim();
