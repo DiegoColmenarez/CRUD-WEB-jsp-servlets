@@ -14,19 +14,28 @@ public class EmailService {
     private static final String SMTP_USER;
 
     static {
-        SMTP_USER = PropertiesLoaderSmtp.get("smtp.user");
+
+        String envUser = System.getenv("SMTP_USER");
+        String envPassword = System.getenv("SMTP_PASSWORD");
+        String envHost = System.getenv("SMTP_HOST");
+        String envPort = System.getenv("SMTP_PORT");
+        SMTP_USER = (envUser != null && !envUser.isEmpty()) ? envUser : PropertiesLoaderSmtp.get("smtp.user");
+        String smtpPassword = (envPassword != null && !envPassword.isEmpty()) ? envPassword : PropertiesLoaderSmtp.get("smtp.password");
+        String smtpHost = (envHost != null && !envHost.isEmpty()) ? envHost : PropertiesLoaderSmtp.get("smtp.host");
+        String smtpPort = (envPort != null && !envPort.isEmpty()) ? envPort : PropertiesLoaderSmtp.get("smtp.port");
+        String auth = PropertiesLoaderSmtp.get("smtp.auth") != null ? PropertiesLoaderSmtp.get("smtp.auth") : "true";
+        String startTls = PropertiesLoaderSmtp.get("smtp.starttls") != null ? PropertiesLoaderSmtp.get("smtp.starttls") : "true";
+
         Properties props = new Properties();
-        props.put("mail.smtp.auth", PropertiesLoaderSmtp.get("smtp.auth"));
-        props.put("mail.smtp.starttls.enable", PropertiesLoaderSmtp.get("smtp.starttls"));
-        props.put("mail.smtp.host", PropertiesLoaderSmtp.get("smtp.host"));
-        props.put("mail.smtp.port", PropertiesLoaderSmtp.get("smtp.port"));
+        props.put("mail.smtp.auth", auth);
+        props.put("mail.smtp.starttls.enable", startTls);
+        props.put("mail.smtp.host", smtpHost);
+        props.put("mail.smtp.port", smtpPort);
+
         SESSION = Session.getInstance(props, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(
-                        SMTP_USER,
-                        PropertiesLoaderSmtp.get("smtp.password")
-                );
+                return new PasswordAuthentication(SMTP_USER, smtpPassword);
             }
         });
     }
