@@ -98,6 +98,13 @@
         <a href="${pageContext.request.contextPath}/jsp/user/searchModify.jsp" class="menu-item">Modificar Usuario</a>
         <a href="${pageContext.request.contextPath}/jsp/user/searchDelete.jsp" class="menu-item">Eliminar Usuario</a>
         <a href="${pageContext.request.contextPath}/user?action=edit&id=${sessionScope.user.id.value}" class="menu-item">Modificar Mis Datos</a>
+        <a href="${pageContext.request.contextPath}/computer?action=list" class="menu-item">Listar Computadoras</a>
+        <a href="${pageContext.request.contextPath}/computer?action=add" class="menu-item">Agregar Computadora</a>
+        <a href="${pageContext.request.contextPath}/jsp/computer/searchModify.jsp" class="menu-item">Modificar Computadora</a>
+        <a href="${pageContext.request.contextPath}/jsp/computer/searchDelete.jsp" class="menu-item">Eliminar Computadora</a>
+        <a href="${pageContext.request.contextPath}/jsp/computer/searchByBrand.jsp" class="menu-item">Buscar por Marca</a>
+        <a href="${pageContext.request.contextPath}/jsp/computer/searchByCategory.jsp" class="menu-item">Buscar por Tipo</a>
+        <a href="${pageContext.request.contextPath}/jsp/computer/searchByMaxPrice.jsp" class="menu-item">Buscar por Precio</a>
     </div>
 
     <a href="${pageContext.request.contextPath}/auth?action=logout" class="logout-btn">Cerrar Sesión</a>
