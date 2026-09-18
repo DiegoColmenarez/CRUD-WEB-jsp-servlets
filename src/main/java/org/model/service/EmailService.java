@@ -15,7 +15,6 @@ public class EmailService {
     private static final String SENDER_EMAIL;
 
     static {
-        // Buscamos la variable de Render
         String envUser = System.getenv("SMTP_USER");
 
         if (envUser != null && !envUser.isEmpty()) {
